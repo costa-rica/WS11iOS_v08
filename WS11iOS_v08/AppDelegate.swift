@@ -6,14 +6,24 @@
 //
 
 import UIKit
-
+import Sentry
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        SentrySDK.start { options in
+            options.dsn = Config.sentryDSN
+            options.releaseName = "WS11iOS_v04"
+//            options.debug = false // Ensure debug logging is disabled
+//            options.diagnosticLevel = SentryLevel.none // Suppress all diagnostic messages
+//            options.debug = true
+            options.tracesSampleRate = 1.0
+            options.beforeSend = { event in
+                return event // Send the modified event
+            }
+        }
         return true
     }
 

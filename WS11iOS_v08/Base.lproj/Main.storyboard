@@ -1,24 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UEo-qG-jIj">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Launch VideoVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LaunchVideoVC" id="BYZ-38-t0r" customClass="LaunchVideoVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="xMh-1d-b2c"/>
+                    <connections>
+                        <segue destination="cN8-aW-kph" kind="show" identifier="goToLoginVC" id="3YM-j6-Zki"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1057.2519083969464" y="-27.464788732394368"/>
+        </scene>
+        <!--LoginVC-->
+        <scene sceneID="w7W-es-NSV">
+            <objects>
+                <viewController storyboardIdentifier="LoginVC" id="cN8-aW-kph" customClass="LoginVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Ev-DP-FU0">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="kl5-tg-7ad"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="JyF-4R-8Qf"/>
+                    <connections>
+                        <segue destination="sa1-CY-EAS" kind="show" identifier="goToForgotPasswordVC" id="HI2-Se-9lE"/>
+                        <segue destination="Qn6-AH-zgF" kind="show" identifier="goToRegisterVC" id="nQk-AN-doK"/>
+                        <segue destination="I4E-Yl-3oa" kind="show" identifier="goToDashboardVC" id="rkU-r5-ov3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bes-iB-rSO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1930.534351145038" y="-25.35211267605634"/>
+        </scene>
+        <!--RegisterVC-->
+        <scene sceneID="fWu-29-N0j">
+            <objects>
+                <viewController id="Qn6-AH-zgF" customClass="RegisterVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NNW-Ts-Map">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="9eg-eD-CVe"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="SFB-ob-FWB"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h1P-cG-CQ6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2898" y="-664"/>
+        </scene>
+        <!--DashboardVC-->
+        <scene sceneID="91d-3I-Opn">
+            <objects>
+                <viewController id="I4E-Yl-3oa" customClass="DashboardVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1b3-mo-M0B" customClass="Dashb">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="vz8-nQ-1hS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="11j-r7-E9t"/>
+                    <connections>
+                        <segue destination="fvX-Z0-Oxg" kind="show" identifier="goToManageDataVC" id="H5O-ov-V4t"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZR-D6-Ual" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2897" y="42"/>
+        </scene>
+        <!--Manage DataVC-->
+        <scene sceneID="8wa-d3-7uv">
+            <objects>
+                <viewController id="fvX-Z0-Oxg" customClass="ManageDataVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Z4I-do-8dM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="gBl-TO-3Zx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="LQi-iD-hM0"/>
+                    <connections>
+                        <segue destination="Vai-T6-hn5" kind="show" identifier="goToManageAppleHealthVC" id="0ii-36-Gcn"/>
+                        <segue destination="hq4-DJ-Aj9" kind="show" identifier="goToManageUserVC" id="6qY-rj-l6e"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OYQ-wt-gow" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3721" y="42"/>
+        </scene>
+        <!--Manage Apple HealthVC-->
+        <scene sceneID="KuL-y8-tIw">
+            <objects>
+                <viewController id="Vai-T6-hn5" customClass="ManageAppleHealthVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hMs-S9-wGv">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Jqb-x9-TRr"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="aKb-cM-cLb"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ese-1F-yKJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4697" y="42"/>
+        </scene>
+        <!--Manage UserVC-->
+        <scene sceneID="5tM-N3-ZnU">
+            <objects>
+                <viewController id="hq4-DJ-Aj9" customClass="ManageUserVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ib1-V3-g9p">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Oye-fJ-erg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3rY-Rm-idK"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zul-aV-nbb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4697" y="-664"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="PI3-GQ-KhF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UEo-qG-jIj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rat-5i-eJ7">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="ijP-L3-knG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="99c-Qt-8Un" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="130.53435114503816" y="-27.464788732394368"/>
+        </scene>
+        <!--Forgot PasswordVC-->
+        <scene sceneID="Qet-uO-tpS">
+            <objects>
+                <viewController id="sa1-CY-EAS" customClass="ForgotPasswordVC" customModule="WS11iOS_v08" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mv2-2q-bkk">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="rON-I0-yOT"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Pva-hI-ONc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RBp-Ii-cBG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2898" y="-1415"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

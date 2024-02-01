@@ -9,21 +9,70 @@
 /* Begin PBXBuildFile section */
 		010556902B6B036400C7A34F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0105568F2B6B036400C7A34F /* AppDelegate.swift */; };
 		010556922B6B036400C7A34F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556912B6B036400C7A34F /* SceneDelegate.swift */; };
-		010556942B6B036400C7A34F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556932B6B036400C7A34F /* ViewController.swift */; };
+		010556942B6B036400C7A34F /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556932B6B036400C7A34F /* LoginVC.swift */; };
 		010556972B6B036400C7A34F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 010556952B6B036400C7A34F /* Main.storyboard */; };
 		010556992B6B036500C7A34F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 010556982B6B036500C7A34F /* Assets.xcassets */; };
 		0105569C2B6B036500C7A34F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0105569A2B6B036500C7A34F /* LaunchScreen.storyboard */; };
+		010556A42B6B04CA00C7A34F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556A32B6B04CA00C7A34F /* Config.swift */; };
+		010556A62B6B04E000C7A34F /* LaunchVideo_v02.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 010556A52B6B04E000C7A34F /* LaunchVideo_v02.mp4 */; };
+		010556A82B6B051000C7A34F /* TemplateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556A72B6B051000C7A34F /* TemplateVC.swift */; };
+		010556AB2B6B057100C7A34F /* LaunchVideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556AA2B6B057100C7A34F /* LaunchVideoVC.swift */; };
+		010556AE2B6B05B800C7A34F /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556AD2B6B05B800C7A34F /* UserStore.swift */; };
+		010556B02B6B05D500C7A34F /* UrlStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556AF2B6B05D500C7A34F /* UrlStore.swift */; };
+		010556B22B6B060400C7A34F /* HealthDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556B12B6B060400C7A34F /* HealthDataStore.swift */; };
+		010556B42B6B061D00C7A34F /* RequestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556B32B6B061D00C7A34F /* RequestStore.swift */; };
+		010556B72B6B067500C7A34F /* DashboardHealthDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556B62B6B067500C7A34F /* DashboardHealthDataObject.swift */; };
+		010556B92B6B068C00C7A34F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556B82B6B068C00C7A34F /* User.swift */; };
+		010556BC2B6B06C500C7A34F /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556BB2B6B06C500C7A34F /* LocationFetcher.swift */; };
+		010556BE2B6B06E100C7A34F /* MiscUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556BD2B6B06E100C7A34F /* MiscUtils.swift */; };
+		010556C02B6B071000C7A34F /* AppleHealthDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556BF2B6B071000C7A34F /* AppleHealthDataFetcher.swift */; };
+		010556C22B6B074300C7A34F /* timezones.txt in Resources */ = {isa = PBXBuildFile; fileRef = 010556C12B6B074300C7A34F /* timezones.txt */; };
+		010556C42B6B0E6A00C7A34F /* DashboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010556C32B6B0E6A00C7A34F /* DashboardVC.swift */; };
+		01D758492B6B10BC003299DC /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D758482B6B10BC003299DC /* ForgotPasswordVC.swift */; };
+		01D7584D2B6B4A9E003299DC /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7584C2B6B4A9E003299DC /* RegisterVC.swift */; };
+		01D7584F2B6B4C10003299DC /* DashboardTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7584E2B6B4C10003299DC /* DashboardTableCell.swift */; };
+		01D758512B6B4C3E003299DC /* SelectDashboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D758502B6B4C3E003299DC /* SelectDashboardVC.swift */; };
+		01D758532B6B4C6A003299DC /* ManageDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D758522B6B4C6A003299DC /* ManageDataVC.swift */; };
+		01D758552B6B4D0A003299DC /* ManageAppleHealthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D758542B6B4D0A003299DC /* ManageAppleHealthVC.swift */; };
+		01D758572B6B4D65003299DC /* ManageUserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D758562B6B4D65003299DC /* ManageUserVC.swift */; };
+		9469AE71E06FF3D44C493776 /* Pods_WS11iOS_v08.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3B0D865AFF3E83D957A870 /* Pods_WS11iOS_v08.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0105568C2B6B036400C7A34F /* WS11iOS_v08.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WS11iOS_v08.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0105568F2B6B036400C7A34F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		010556912B6B036400C7A34F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		010556932B6B036400C7A34F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		010556932B6B036400C7A34F /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		010556962B6B036400C7A34F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		010556982B6B036500C7A34F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0105569B2B6B036500C7A34F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0105569D2B6B036500C7A34F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		010556A32B6B04CA00C7A34F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		010556A52B6B04E000C7A34F /* LaunchVideo_v02.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LaunchVideo_v02.mp4; sourceTree = "<group>"; };
+		010556A72B6B051000C7A34F /* TemplateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateVC.swift; sourceTree = "<group>"; };
+		010556AA2B6B057100C7A34F /* LaunchVideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVideoVC.swift; sourceTree = "<group>"; };
+		010556AD2B6B05B800C7A34F /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
+		010556AF2B6B05D500C7A34F /* UrlStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlStore.swift; sourceTree = "<group>"; };
+		010556B12B6B060400C7A34F /* HealthDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataStore.swift; sourceTree = "<group>"; };
+		010556B32B6B061D00C7A34F /* RequestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStore.swift; sourceTree = "<group>"; };
+		010556B62B6B067500C7A34F /* DashboardHealthDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardHealthDataObject.swift; sourceTree = "<group>"; };
+		010556B82B6B068C00C7A34F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		010556BB2B6B06C500C7A34F /* LocationFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFetcher.swift; sourceTree = "<group>"; };
+		010556BD2B6B06E100C7A34F /* MiscUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscUtils.swift; sourceTree = "<group>"; };
+		010556BF2B6B071000C7A34F /* AppleHealthDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDataFetcher.swift; sourceTree = "<group>"; };
+		010556C12B6B074300C7A34F /* timezones.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = timezones.txt; sourceTree = "<group>"; };
+		010556C32B6B0E6A00C7A34F /* DashboardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardVC.swift; sourceTree = "<group>"; };
+		01D758482B6B10BC003299DC /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
+		01D7584A2B6B495F003299DC /* WS11iOS_v08.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WS11iOS_v08.entitlements; sourceTree = "<group>"; };
+		01D7584C2B6B4A9E003299DC /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
+		01D7584E2B6B4C10003299DC /* DashboardTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardTableCell.swift; sourceTree = "<group>"; };
+		01D758502B6B4C3E003299DC /* SelectDashboardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDashboardVC.swift; sourceTree = "<group>"; };
+		01D758522B6B4C6A003299DC /* ManageDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageDataVC.swift; sourceTree = "<group>"; };
+		01D758542B6B4D0A003299DC /* ManageAppleHealthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAppleHealthVC.swift; sourceTree = "<group>"; };
+		01D758562B6B4D65003299DC /* ManageUserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageUserVC.swift; sourceTree = "<group>"; };
+		778FDED6DEC3144B3A4D3B84 /* Pods-WS11iOS_v08.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WS11iOS_v08.debug.xcconfig"; path = "Target Support Files/Pods-WS11iOS_v08/Pods-WS11iOS_v08.debug.xcconfig"; sourceTree = "<group>"; };
+		CD3B0D865AFF3E83D957A870 /* Pods_WS11iOS_v08.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WS11iOS_v08.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F52B19DD50543063124C7AC9 /* Pods-WS11iOS_v08.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WS11iOS_v08.release.xcconfig"; path = "Target Support Files/Pods-WS11iOS_v08/Pods-WS11iOS_v08.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9469AE71E06FF3D44C493776 /* Pods_WS11iOS_v08.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,8 +90,11 @@
 		010556832B6B036400C7A34F = {
 			isa = PBXGroup;
 			children = (
+				010556A32B6B04CA00C7A34F /* Config.swift */,
 				0105568E2B6B036400C7A34F /* WS11iOS_v08 */,
 				0105568D2B6B036400C7A34F /* Products */,
+				DAD2372B7B89429382E5C27E /* Pods */,
+				6BB29A229D7745502BC3B96D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +109,86 @@
 		0105568E2B6B036400C7A34F /* WS11iOS_v08 */ = {
 			isa = PBXGroup;
 			children = (
+				01D7584A2B6B495F003299DC /* WS11iOS_v08.entitlements */,
+				010556BA2B6B06B600C7A34F /* Utilities */,
+				010556B52B6B065800C7A34F /* Models */,
+				010556AC2B6B05A100C7A34F /* Stores */,
+				010556A92B6B055600C7A34F /* Views */,
+				010556A52B6B04E000C7A34F /* LaunchVideo_v02.mp4 */,
 				0105568F2B6B036400C7A34F /* AppDelegate.swift */,
 				010556912B6B036400C7A34F /* SceneDelegate.swift */,
-				010556932B6B036400C7A34F /* ViewController.swift */,
 				010556952B6B036400C7A34F /* Main.storyboard */,
 				010556982B6B036500C7A34F /* Assets.xcassets */,
 				0105569A2B6B036500C7A34F /* LaunchScreen.storyboard */,
 				0105569D2B6B036500C7A34F /* Info.plist */,
 			);
 			path = WS11iOS_v08;
+			sourceTree = "<group>";
+		};
+		010556A92B6B055600C7A34F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				010556A72B6B051000C7A34F /* TemplateVC.swift */,
+				010556932B6B036400C7A34F /* LoginVC.swift */,
+				010556AA2B6B057100C7A34F /* LaunchVideoVC.swift */,
+				010556C32B6B0E6A00C7A34F /* DashboardVC.swift */,
+				01D758482B6B10BC003299DC /* ForgotPasswordVC.swift */,
+				01D7584C2B6B4A9E003299DC /* RegisterVC.swift */,
+				01D7584E2B6B4C10003299DC /* DashboardTableCell.swift */,
+				01D758502B6B4C3E003299DC /* SelectDashboardVC.swift */,
+				01D758522B6B4C6A003299DC /* ManageDataVC.swift */,
+				01D758542B6B4D0A003299DC /* ManageAppleHealthVC.swift */,
+				01D758562B6B4D65003299DC /* ManageUserVC.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		010556AC2B6B05A100C7A34F /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				010556AD2B6B05B800C7A34F /* UserStore.swift */,
+				010556B12B6B060400C7A34F /* HealthDataStore.swift */,
+				010556AF2B6B05D500C7A34F /* UrlStore.swift */,
+				010556B32B6B061D00C7A34F /* RequestStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		010556B52B6B065800C7A34F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				010556B62B6B067500C7A34F /* DashboardHealthDataObject.swift */,
+				010556B82B6B068C00C7A34F /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		010556BA2B6B06B600C7A34F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				010556BB2B6B06C500C7A34F /* LocationFetcher.swift */,
+				010556BD2B6B06E100C7A34F /* MiscUtils.swift */,
+				010556BF2B6B071000C7A34F /* AppleHealthDataFetcher.swift */,
+				010556C12B6B074300C7A34F /* timezones.txt */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		6BB29A229D7745502BC3B96D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD3B0D865AFF3E83D957A870 /* Pods_WS11iOS_v08.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DAD2372B7B89429382E5C27E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				778FDED6DEC3144B3A4D3B84 /* Pods-WS11iOS_v08.debug.xcconfig */,
+				F52B19DD50543063124C7AC9 /* Pods-WS11iOS_v08.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +198,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 010556A02B6B036500C7A34F /* Build configuration list for PBXNativeTarget "WS11iOS_v08" */;
 			buildPhases = (
+				6F9A041D858AE0D6636292E1 /* [CP] Check Pods Manifest.lock */,
 				010556882B6B036400C7A34F /* Sources */,
 				010556892B6B036400C7A34F /* Frameworks */,
 				0105568A2B6B036400C7A34F /* Resources */,
+				00F766BF7DE432AE306B4680 /* [CP] Embed Pods Frameworks */,
+				01D7584B2B6B4A02003299DC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -125,22 +252,103 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010556C22B6B074300C7A34F /* timezones.txt in Resources */,
 				0105569C2B6B036500C7A34F /* LaunchScreen.storyboard in Resources */,
 				010556992B6B036500C7A34F /* Assets.xcassets in Resources */,
 				010556972B6B036400C7A34F /* Main.storyboard in Resources */,
+				010556A62B6B04E000C7A34F /* LaunchVideo_v02.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00F766BF7DE432AE306B4680 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WS11iOS_v08/Pods-WS11iOS_v08-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WS11iOS_v08/Pods-WS11iOS_v08-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WS11iOS_v08/Pods-WS11iOS_v08-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		01D7584B2B6B4A02003299DC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Path to the plist\ninfoPlist=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n\n# Fetch the encryption code value from Config.swift\nencryptionCodeValue=$(awk '/static let ITSEncryptionExportComplianceCodeValue =/ { print $NF }' \"${SRCROOT}/Config.swift\" | tr -d '\"')\n\n# Replace the placeholder in the plist\nif [ ! -z \"$encryptionCodeValue\" ]; then\n    /usr/libexec/PlistBuddy -c \"Set :ITSEncryptionExportComplianceCode $encryptionCodeValue\" \"$infoPlist\"\nfi\n";
+		};
+		6F9A041D858AE0D6636292E1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WS11iOS_v08-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		010556882B6B036400C7A34F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010556942B6B036400C7A34F /* ViewController.swift in Sources */,
+				010556BC2B6B06C500C7A34F /* LocationFetcher.swift in Sources */,
+				010556942B6B036400C7A34F /* LoginVC.swift in Sources */,
+				010556B02B6B05D500C7A34F /* UrlStore.swift in Sources */,
+				010556AE2B6B05B800C7A34F /* UserStore.swift in Sources */,
+				010556B22B6B060400C7A34F /* HealthDataStore.swift in Sources */,
+				01D7584F2B6B4C10003299DC /* DashboardTableCell.swift in Sources */,
+				010556AB2B6B057100C7A34F /* LaunchVideoVC.swift in Sources */,
+				01D758492B6B10BC003299DC /* ForgotPasswordVC.swift in Sources */,
+				010556A42B6B04CA00C7A34F /* Config.swift in Sources */,
+				010556C02B6B071000C7A34F /* AppleHealthDataFetcher.swift in Sources */,
+				010556A82B6B051000C7A34F /* TemplateVC.swift in Sources */,
+				010556B72B6B067500C7A34F /* DashboardHealthDataObject.swift in Sources */,
+				01D758552B6B4D0A003299DC /* ManageAppleHealthVC.swift in Sources */,
+				01D758572B6B4D65003299DC /* ManageUserVC.swift in Sources */,
+				010556B92B6B068C00C7A34F /* User.swift in Sources */,
+				01D758532B6B4C6A003299DC /* ManageDataVC.swift in Sources */,
+				010556B42B6B061D00C7A34F /* RequestStore.swift in Sources */,
 				010556902B6B036400C7A34F /* AppDelegate.swift in Sources */,
+				010556C42B6B0E6A00C7A34F /* DashboardVC.swift in Sources */,
+				01D7584D2B6B4A9E003299DC /* RegisterVC.swift in Sources */,
 				010556922B6B036400C7A34F /* SceneDelegate.swift in Sources */,
+				010556BE2B6B06E100C7A34F /* MiscUtils.swift in Sources */,
+				01D758512B6B4C3E003299DC /* SelectDashboardVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,19 +495,26 @@
 		};
 		010556A12B6B036500C7A34F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 778FDED6DEC3144B3A4D3B84 /* Pods-WS11iOS_v08.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WS11iOS_v08/WS11iOS_v08.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GL5QL25H5M;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WS11iOS_v08/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "What Sticks";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,19 +530,26 @@
 		};
 		010556A22B6B036500C7A34F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F52B19DD50543063124C7AC9 /* Pods-WS11iOS_v08.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WS11iOS_v08/WS11iOS_v08.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GL5QL25H5M;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WS11iOS_v08/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "What Sticks";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
