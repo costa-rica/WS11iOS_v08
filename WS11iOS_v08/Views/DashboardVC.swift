@@ -212,7 +212,6 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
         self.update_arryDashboardTableObjects()
     }
     @objc private func touchUpInside_btnDashboards(_ sender: UIRefreshControl){
-        //        self.update_arryDashboardTableObjects()
         print("present SelectDashboardVC")
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
             sender.transform = .identity
@@ -223,14 +222,12 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
         selectDashboardVC.modalTransitionStyle = .crossDissolve
         self.present(selectDashboardVC, animated: true, completion: nil)
     }
-    
     @objc private func touchUpInside_btnRefreshDashboard(_ sender: UIButton){
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
             sender.transform = .identity
         }, completion: nil)
         self.update_arryDashboardTableObjects()
     }
-    
     @objc func touchUpInside_goToManageDataVC(_ sender: UIButton) {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
             sender.transform = .identity

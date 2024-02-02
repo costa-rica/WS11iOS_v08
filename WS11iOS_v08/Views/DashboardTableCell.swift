@@ -122,7 +122,6 @@ class DashboardTableCell: UITableViewCell {
             }
             lblCorrelation.text = String(format: "%.2f", Double(unwp_corr_value) ?? 0.0)
             whatItMeansToYou()
-            //            lblWhatItMeansToYou.text = txtWhatItMeansToYou
         }
     }
     func showLblDef() {
