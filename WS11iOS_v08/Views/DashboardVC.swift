@@ -334,8 +334,8 @@ extension DashboardVC: UITableViewDataSource{
               let unwpVerb = currentDashObj.verb else {return cell}
         
         cell.indepVarObject = arryIndepVarObjects[indexPath.row]
-        cell.configureCellWithIndepVarObject()
         cell.depVarVerb = unwpVerb
+        cell.configureCellWithIndepVarObject()
         return cell
     }
     
