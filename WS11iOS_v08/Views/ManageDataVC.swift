@@ -168,10 +168,8 @@ extension ManageDataVC: UITableViewDelegate{
 }
 
 extension ManageDataVC: UITableViewDataSource{
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("**********")
-        print("userStore.arryDataSourceObjects?.count: \(userStore.arryDataSourceObjects?.count)")
-        print("**********")
         return userStore.arryDataSourceObjects?.count ?? 0
     }
     
@@ -179,12 +177,7 @@ extension ManageDataVC: UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "ManageDataTableCell", for: indexPath) as! ManageDataTableCell
         guard let arryDataSourceObjects = userStore.arryDataSourceObjects else {return cell}
         cell.dataSourceObj = arryDataSourceObjects[indexPath.row]
-        
-        
         cell.config()
-//        let dataSourceText = dashHealthDataObj.name!
-//        let recordCountText = dashHealthDataObj.recordCount!
-//        cell.config(dataSource: dashHealthDataObj.name ?? "no name",recordCount:dashHealthDataObj.recordCount ?? "no records")
         cell.manageDataTableVCDelegate = self
         cell.indexPath = indexPath
         return cell
@@ -193,8 +186,6 @@ extension ManageDataVC: UITableViewDataSource{
 }
 
 protocol ManageDataVCDelegate{
-    //    func showHistoryOptions(source:String)
-//    func showHistoryOptions(forSource:String)
     func showSpinner()
     func removeSpinner()
     func segueToManageDataSourceDetailsVC(source:String)
@@ -209,9 +200,6 @@ class ManageDataTableCell: UITableViewCell{
     var lblRecordCount = UILabel()
     var lblEarliestDate = UILabel()
     var btnAddDelete = UIButton()
-//    var dataSource = ""
-//    var vwSpacerTop = UIView()
-//    var vwSpacer = UIView()
     var indexPath: IndexPath!
     
     

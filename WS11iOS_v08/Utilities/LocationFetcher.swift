@@ -10,37 +10,33 @@ import CoreLocation
 
 class LocationFetcher: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
-    var userLocation = CLLocationCoordinate2D(){
-        didSet{
-            print("userLocation.lat: \(userLocation.latitude)")
-            print("userLocation.lon: \(userLocation.longitude)")
-        }
-    }
+    private var completion: ((Result<CLLocationCoordinate2D, Error>) -> Void)?
 
     override init() {
-        print("- LocationFetcher init()")
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
     }
 
-    func fetchLocation() {
-        print("- LocationFetcher fetchLocation()")
+    func fetchLocation(completion: @escaping (Result<CLLocationCoordinate2D, Error>) -> Void) {
+        self.completion = completion
         locationManager.requestLocation() // Request location once
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("- LocationFetcher locationManager()")
-//        userLocation = locations.first?.coordinate
-        if let unwp_locations = locations.first {
-            userLocation = unwp_locations.coordinate
-            // You might want to stop updating location here or handle it as per your requirement
-            locationManager.stopUpdatingLocation()
+        if let location = locations.first {
+            completion?(.success(location.coordinate))
+        } else {
+            completion?(.failure(NSError(domain: "LocationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Location data is unavailable."])))
         }
+        // Reset the completion handler to nil to avoid retaining it longer than necessary
+        self.completion = nil
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error getting location: \(error)")
+        completion?(.failure(error))
+        // Reset the completion handler to nil to avoid retaining it longer than necessary
+        self.completion = nil
     }
 }

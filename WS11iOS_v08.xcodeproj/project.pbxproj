@@ -282,6 +282,7 @@
 		};
 		01D7584B2B6B4A02003299DC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -509,6 +510,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "What Sticks";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Allow What Sticks to get your location to calculate the correct timezone";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow What Sticks to get your location to calculate the correct timezone";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -544,6 +547,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "What Sticks";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Allow What Sticks to get your location to calculate the correct timezone";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow What Sticks to get your location to calculate the correct timezone";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
