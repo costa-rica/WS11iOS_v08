@@ -37,7 +37,6 @@ class RegisterVC: TemplateVC {
         setup_lblTitle()
         setup_stckVwRegister()
         setup_btnRegister()
-        
     }
     func setup_lblTitle(){
         lblScreenNameTitle.text = "Register"
@@ -95,14 +94,13 @@ class RegisterVC: TemplateVC {
         txtEmail.layer.borderColor = UIColor.systemGray.cgColor // Adjust color as needed
         txtEmail.layer.borderWidth = 1.0 // Adjust border width as needed
         txtEmail.layer.cornerRadius = 5.0 // Adjust corner radius as needed
-        txtEmail.backgroundColor = UIColor.systemBackground // Adjust for dark/light mode compatibility
         txtEmail.layer.masksToBounds = true
+        view.layoutIfNeeded()// <-- Important (right here) to prevent UITextField error when typing in it
         
         // Customize txtPassword
         txtPassword.layer.borderColor = UIColor.systemGray.cgColor // Adjust color as needed
         txtPassword.layer.borderWidth = 1.0 // Adjust border width as needed
         txtPassword.layer.cornerRadius = 5.0 // Adjust corner radius as needed
-        txtPassword.backgroundColor = UIColor.systemBackground // Adjust for dark/light mode compatibility
         txtPassword.layer.masksToBounds = true
         
         txtEmail.heightAnchor.constraint(equalToConstant: 35).isActive = true // Adjust height as needed
@@ -118,11 +116,12 @@ class RegisterVC: TemplateVC {
             lblEmail.widthAnchor.constraint(equalTo: lblPassword.widthAnchor),
         ])
         
-        view.layoutIfNeeded()// <-- Realizes size of lblPassword and stckVwLogin
+        
         
         // This code makes the widths of lblPassword and btnShowPassword take lower precedence than txtPassword.
         lblPassword.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         btnShowPassword.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
     }
     
     func setup_btnRegister(){

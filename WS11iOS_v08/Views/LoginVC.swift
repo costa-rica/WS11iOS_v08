@@ -83,9 +83,9 @@ class LoginVC: TemplateVC {
         userStore.checkUserJson { responseResult in
             DispatchQueue.main.async {
                 switch responseResult{
-                case let .success(user_obj):
-                    self.txtEmail.text=user_obj.email
-                    self.txtPassword.text=user_obj.password
+                case  .success(_):
+                    self.txtEmail.text=self.userStore.user.email
+                    self.txtPassword.text=self.userStore.user.password
                 case .failure(_):
                     print("no user found")
                 }
@@ -228,35 +228,28 @@ class LoginVC: TemplateVC {
         userStore.callLoginUser(email: txtEmail.text ?? "", password: txtPassword.text ?? "") { responseResultLogin in
             DispatchQueue.main.async {
             switch responseResultLogin{
-            case let .success(user_obj):
-                self.requestStore.token = user_obj.token
-                self.userStore.user.id = user_obj.id
-                self.userStore.user.token = user_obj.token
-                self.userStore.user.email = self.txtEmail.text
-                self.userStore.user.password = self.txtPassword.text
-                self.userStore.user.username = user_obj.username
-                self.userStore.user.timezone = user_obj.timezone
-                self.requestStore.token = user_obj.token!
-                if let unwrap_oura_token = user_obj.oura_token{
-                    self.userStore.user.oura_token = unwrap_oura_token
-                }
-                
+            case .success(_):
+                self.requestStore.token = self.userStore.user.token
+
                 // Sentry event info only for production
                 if self.requestStore.urlStore.apiBase == .prod{
                     let event = Event(level: .info)
                     event.message = SentryMessage(formatted: "User logged in")
-                    if let unwp_username = user_obj.username,
-                       let uwwp_user_id = user_obj.id {
-                        event.extra = ["username": unwp_username, "user_id": uwwp_user_id]
+                    if let unwp_username = self.userStore.user.username,
+                       let unwp_id = self.userStore.user.id {
+                        event.extra = ["username":unwp_username, "user_id": unwp_id]
+                        SentrySDK.capture(event: event)
                     }
-                    SentrySDK.capture(event: event)
                 }
-                self.token = user_obj.token!// <-- last because action follows this assignment via didSet()
+                if let unwp_token = self.userStore.user.token{
+                    self.token = unwp_token// <-- last because action follows this assignment via didSet()
+                }
+                if self.swRememberMe.isOn{
+                    self.userStore.writeObjectToJsonFile(object: self.userStore.user, filename: "user.json")
+                }
                 
-            case let .failure(error):
-                
-                
-                self.templateAlert(alertTitle: "\(error)", alertMessage: "Did you register?")
+            case .failure(_):
+                self.templateAlert(alertTitle: "Unsuccessful Login", alertMessage: "Did you register?")
                 }
             }
         }

@@ -28,13 +28,14 @@ enum UserStoreError: Error {
 class UserStore {
     let fileManager:FileManager
     let documentsURL:URL
-    var user = User(){
-        didSet{
-            if rememberMe {
-                writeObjectToJsonFile(object: user, filename: "user.json")
-            }
-        }
-    }
+    var user = User()
+//    {
+//        didSet{
+//            if rememberMe {
+//                writeObjectToJsonFile(object: user, filename: "user.json")
+//            }
+//        }
+//    }
     var arryDataSourceObjects:[DataSourceObject]?
     var boolDashObjExists:Bool!
     var boolMultipleDashObjExist:Bool!
@@ -62,8 +63,9 @@ class UserStore {
         self.fileManager = FileManager.default
         self.documentsURL = self.fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
-    func callUpdateUser(completion: @escaping (Result<String, Error>) -> Void) {
-        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: ["timezone":user.timezone])
+    func callUpdateUser(updateDict: [String:String], completion: @escaping (Result<String, Error>) -> Void) {
+//        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: ["timezone":user.timezone])
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: updateDict)
         let task = session.dataTask(with: request) { data, response, error in
             guard let unwrappedData = data else {
                 print("no data response")
@@ -128,7 +130,7 @@ class UserStore {
         }
         task.resume()
     }
-    func callLoginUser(email: String, password: String, completion: @escaping (Result<User, Error>) -> Void) {
+    func callLoginUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let result = requestStore.createRequestLogin(email: email, password: password)
         
         switch result {
@@ -144,9 +146,13 @@ class UserStore {
                 
                 do {
                     let jsonDecoder = JSONDecoder()
-                    let jsonUser = try jsonDecoder.decode(User.self, from: unwrapped_data)
+//                    let jsonUser = try jsonDecoder.decode(User.self, from: unwrapped_data)
+                    self.user = try jsonDecoder.decode(User.self, from: unwrapped_data)
+                    print("user respond login success")
                     OperationQueue.main.addOperation {
-                        completion(.success(jsonUser))
+//                        completion(.success(jsonUser))
+                        
+                        completion(.success(true))
                     }
                 } catch {
                     OperationQueue.main.addOperation {
@@ -380,7 +386,7 @@ extension UserStore{
         
     }
     
-    func checkUserJson(completion: (Result<User,Error>) -> Void){
+    func checkUserJson(completion: (Result<Bool,Error>) -> Void){
         
         let userJsonFile = documentsURL.appendingPathComponent("user.json")
         
@@ -388,21 +394,23 @@ extension UserStore{
             completion(.failure(UserStoreError.failedDecode))
             return
         }
-        var user:User?
+//        var user:User?
         do{
             let jsonData = try Data(contentsOf: userJsonFile)
             let decoder = JSONDecoder()
-            user = try decoder.decode(User.self, from:jsonData)
+//            user = try decoder.decode(User.self, from:jsonData)
+            self.user = try decoder.decode(User.self, from:jsonData)
         } catch {
             print("- failed to make userDict");
             completion(.failure(UserStoreError.failedDecode))
         }
-        guard let unwrapped_user = user else {
-            print("unwrapped_userDict failed")
-            completion(.failure(UserStoreError.failedDecode))
-            return
-        }
-        completion(.success(unwrapped_user))
+//        guard let unwrapped_user = user else {
+//            print("unwrapped_userDict failed")
+//            completion(.failure(UserStoreError.failedDecode))
+//            return
+//        }
+//        completion(.success(unwrapped_user))
+        completion(.success(true))
         
     }
     

@@ -81,7 +81,7 @@ class ForgotPasswordVC: TemplateVC {
             sender.transform = .identity
         }, completion: nil)
         print("pressed submit")
-        print(txtEmail.text)
+//        print(txtEmail.text)
     }
     
     

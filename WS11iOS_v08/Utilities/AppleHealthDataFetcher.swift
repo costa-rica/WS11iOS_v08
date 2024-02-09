@@ -194,7 +194,7 @@ class AppleHealthDataFetcher {
                 }
                 samples?.forEach { sample in
                     if let workout = sample as? HKWorkout {
-                        var entry = AppleHealthWorkout()
+                        let entry = AppleHealthWorkout()
                         entry.sampleType = workout.workoutActivityType.rawValue.description
                         entry.startDate = workout.startDate.description
                         entry.endDate = workout.endDate.description
