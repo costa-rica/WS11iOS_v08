@@ -169,9 +169,6 @@ extension ManageDataVC: UITableViewDelegate{
 
 extension ManageDataVC: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("**********")
-        print("userStore.arryDataSourceObjects?.count: \(userStore.arryDataSourceObjects?.count)")
-        print("**********")
         return userStore.arryDataSourceObjects?.count ?? 0
     }
     
