@@ -88,3 +88,27 @@ class User: Codable {
     }
 
 }
+
+extension User {
+    // Encode all User properties as strings
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        // Encode all properties as strings
+        try container.encode(id ?? "", forKey: .id)
+        try container.encode(email ?? "", forKey: .email)
+        try container.encode(password ?? "", forKey: .password)
+        try container.encode(username ?? "", forKey: .username)
+        try container.encode(token ?? "", forKey: .token)
+        try container.encode(oura_token ?? "", forKey: .oura_token)
+        try container.encode(latitude ?? "", forKey: .latitude)
+        try container.encode(longitude ?? "", forKey: .longitude)
+        try container.encode(timezone ?? "", forKey: .timezone)
+        
+        // Convert booleans to strings
+        try container.encode(admin?.description ?? "false", forKey: .admin)
+        try container.encode(location_permission?.description ?? "false", forKey: .location_permission)
+        try container.encode(location_reoccuring_permission?.description ?? "false", forKey: .location_reoccuring_permission)
+    }
+}
+

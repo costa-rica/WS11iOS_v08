@@ -12,8 +12,8 @@ enum UserStoreError: Error {
     case failedToLogin
     case failedToRegister
     case failedToUpdateUser
-    case failedToRecieveServerResponse
-    case failedToRecievedExpectedResponse
+    case failedToReceiveServerResponse
+    case failedToReceiveExpectedResponse
     case fileNotFound
     case serverError(statusCode: Int)
     var localizedDescription: String {
@@ -69,7 +69,7 @@ class UserStore {
         let task = session.dataTask(with: request) { data, response, error in
             guard let unwrappedData = data else {
                 print("no data response")
-                completion(.failure(UserStoreError.failedToRecieveServerResponse))
+                completion(.failure(UserStoreError.failedToReceiveServerResponse))
                 return
             }
             do {
@@ -94,42 +94,49 @@ class UserStore {
         }
         task.resume()
     }
-    func callRegisterNewUser(email: String, password: String,lat:Double,lon:Double, completion: @escaping (Result<[String: String], Error>) -> Void) {
-        
+    func callRegisterNewUser(email: String, password: String, lat: Double, lon: Double, completion: @escaping (Result<[String: String], Error>) -> Void) {
         let latString = String(lat)
         let lonString = String(lon)
-        
-        print("- registerNewUser accessed")
-        let request = requestStore.createRequestWithTokenAndBody(endPoint: .register, body: ["new_email":email, "new_password":password, "lat":latString,"lon":lonString])
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: .register, body: ["new_email": email, "new_password": password, "lat": latString, "lon": lonString])
         let task = session.dataTask(with: request) { data, response, error in
+            // Check for an error. If there is one, complete with failure.
+            if let error = error {
+                print("Network request error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+            // Ensure data is not nil, otherwise, complete with a custom error.
             guard let unwrappedData = data else {
-                print("no data response")
-                completion(.failure(UserStoreError.failedToRecieveServerResponse))
+                print("No data response")
+                completion(.failure(UserStoreError.failedToReceiveServerResponse))
                 return
             }
             do {
-                if let jsonResult = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: Any] {
-                    print("json serialized well")
-                    if let id = jsonResult["id"] as? String {
-                        print("json serialized well - doing better")
-                        OperationQueue.main.addOperation {
-                            completion(.success(["id": id]))
-                        }
-                    } else {
-                        OperationQueue.main.addOperation {
-                            completion(.failure(UserStoreError.failedToRegister))
-                        }
+                // Attempt to decode the JSON response.
+                if let jsonResult = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: String] {
+                    print("JSON serialized well")
+                    // Ensure completion handler is called on the main queue.
+                    DispatchQueue.main.async {
+                        completion(.success(jsonResult))
                     }
                 } else {
-                    throw UserStoreError.failedDecode
+                    // If decoding fails, complete with a custom error.
+                    DispatchQueue.main.async {
+                        completion(.failure(UserStoreError.failedDecode))
+                    }
                 }
             } catch {
+                // Handle any errors that occurred during the JSON decoding.
                 print("---- UserStore.registerNewUser: Failed to read response")
-                completion(.failure(UserStoreError.failedDecode))
+                DispatchQueue.main.async {
+                    completion(.failure(UserStoreError.failedDecode))
+                }
             }
         }
         task.resume()
     }
+
+
     func callLoginUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         let result = requestStore.createRequestLogin(email: email, password: password)
         
@@ -139,7 +146,7 @@ class UserStore {
                 // Handle the task's completion here as before
                 guard let unwrapped_data = data else {
                     OperationQueue.main.addOperation {
-                        completion(.failure(UserStoreError.failedToRecieveServerResponse))
+                        completion(.failure(UserStoreError.failedToReceiveServerResponse))
                     }
                     return
                 }
@@ -221,7 +228,7 @@ class UserStore {
         let task = requestStore.session.dataTask(with: request) { data, urlResponse, error in
             guard let unwrapped_data = data else {
                 OperationQueue.main.addOperation {
-                    completion(.failure(UserStoreError.failedToRecieveServerResponse))
+                    completion(.failure(UserStoreError.failedToReceiveServerResponse))
                 }
                 return
             }
@@ -236,7 +243,7 @@ class UserStore {
             } catch {
                 print("did not get expected response from WSAPI - probably no file for user")
                 OperationQueue.main.addOperation {
-                    completion(.failure(UserStoreError.failedToRecievedExpectedResponse))
+                    completion(.failure(UserStoreError.failedToReceiveExpectedResponse))
                 }
             }
         }
@@ -271,7 +278,7 @@ class UserStore {
                     // Handle success case
                     guard let unwrappedData = data else {
                         OperationQueue.main.addOperation {
-                            completion(.failure(UserStoreError.failedToRecieveServerResponse))
+                            completion(.failure(UserStoreError.failedToReceiveServerResponse))
                         }
                         return
                     }
@@ -285,7 +292,7 @@ class UserStore {
                         }
                     } catch {
                         OperationQueue.main.addOperation {
-                            completion(.failure(UserStoreError.failedToRecievedExpectedResponse))
+                            completion(.failure(UserStoreError.failedToReceiveExpectedResponse))
                         }
                     }
                 case 404:
@@ -386,7 +393,7 @@ extension UserStore{
         
     }
     
-    func checkUserJson(completion: (Result<Bool,Error>) -> Void){
+    func checkUserJson(completion: @escaping (Result<Bool,Error>) -> Void){
         
         let userJsonFile = documentsURL.appendingPathComponent("user.json")
         
@@ -399,7 +406,13 @@ extension UserStore{
             let jsonData = try Data(contentsOf: userJsonFile)
             let decoder = JSONDecoder()
 //            user = try decoder.decode(User.self, from:jsonData)
+//            OperationQueue.main.addOperation {
+            
             self.user = try decoder.decode(User.self, from:jsonData)
+            print("-- checkUserJson -- self.user email: \(self.user.email)")
+            // OperationQueue.main.addOperation  {
+            completion(.success(true))
+            // }
         } catch {
             print("- failed to make userDict");
             completion(.failure(UserStoreError.failedDecode))
@@ -410,7 +423,7 @@ extension UserStore{
 //            return
 //        }
 //        completion(.success(unwrapped_user))
-        completion(.success(true))
+//        completion(.success(true))
         
     }
     

@@ -193,23 +193,26 @@ class RegisterVC: TemplateVC {
     
     func requestRegister() {
         print("- RegisterVC: requestRegister()")
-//        let lat = locationFetcher.userLocation?.latitude ?? 999.99
-//        let lon = locationFetcher.userLocation?.longitude ?? 999.99
-//        let lat = locationFetcher.userLocation.latitude
-//        let lon = locationFetcher.userLocation.longitude
         let lat = 999.99
         let lon = 999.99
         userStore.callRegisterNewUser(email: txtEmail.text!, password: txtPassword.text!,lat:lat, lon: lon) { responseResultRegister in
             DispatchQueue.main.async {
                 switch responseResultRegister {
-                case .success(_):
-                    self.successAlert()
+                case let .success(jsonResult):
+                    if let _ = jsonResult["id"]{
+                        self.successAlert()
+                    } else if let alertTitle = jsonResult["alert_title"],
+                              let alertMessage = jsonResult["alert_message"]{
+                        self.templateAlert(alertTitle: alertTitle, alertMessage: alertMessage)
+                    } else {
+                        self.templateAlert(alertMessage: "Unable to register at this time.")
+                    }
 
                 case .failure(let error):
                     let errorMessage: String
                     if let userStoreError = error as? UserStoreError {
                         switch userStoreError {
-                        case .failedToRecieveServerResponse:
+                        case .failedToReceiveServerResponse:
                             errorMessage = "Failed to receive server response. Please check your network connection."
                         case .failedToRegister:
                             errorMessage = "Registration failed. Please ensure the email is not already in use."

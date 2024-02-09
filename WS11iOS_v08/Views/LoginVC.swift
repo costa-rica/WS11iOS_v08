@@ -50,13 +50,13 @@ class LoginVC: TemplateVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.requestStore = RequestStore()
-//        self.setupIsDev(urlStore: requestStore.urlStore)
         self.userStore = UserStore()
         self.userStore.currentDashboardObjPos = 0
         self.userStore.requestStore = self.requestStore
         self.appleHealthDataFetcher = AppleHealthDataFetcher()
         self.healthDataStore = HealthDataStore()
         self.healthDataStore.requestStore = self.requestStore
+        self.setupIsDev(urlStore: requestStore.urlStore)
 //        self.locationFetcher = LocationFetcher()
 //        self.locationFetcher.fetchLocation()
         
@@ -79,6 +79,7 @@ class LoginVC: TemplateVC {
         self.isInitialViewController=true
         self.changeLogoForLoginVC()
     }// This is just to set up logo in vwTopBar
+    
     func setup_checkFiles(){
         userStore.checkUserJson { responseResult in
             DispatchQueue.main.async {
