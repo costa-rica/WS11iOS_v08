@@ -13,6 +13,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
     var requestStore: RequestStore!
     var appleHealthDataFetcher:AppleHealthDataFetcher!
     var healthDataStore:HealthDataStore!
+    var locationFetcher:LocationFetcher!
     var btnGoToManageDataVC=UIButton()
     var boolDashObjExists:Bool!
     var tblDashboard:UITableView?
@@ -21,6 +22,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
     var btnDashboardTitleInfo:UIButton?
     var btnRefreshDashboard:UIButton?
     var btnDashboards:UIButton?
+    var updateDict:[String:String] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
         self.lblScreenName.text = "Dashboard"
         print("- in DashboardVC viewDidLoad -")
         self.setup_btnGoToManageDataVC()
+//        self.getLocationPermission()
     }
     override func viewWillAppear(_ animated: Bool) {
         checkDashboardTableObjectNew()
@@ -201,8 +204,28 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
     
     
 
-
-    
+    /* Location Methods */
+    func sendLocation(){
+        locationFetcher.fetchLocation { resultBool in
+            if resultBool == false{
+                self.templateAlert(alertTitle: "Location Error", alertMessage: "This application needs your location to fully function.")
+            }
+            else {
+                guard let unwp_currLoc = self.locationFetcher.currentLocation else{ self.templateAlert(alertTitle: "Location Issue", alertMessage: "Did not get latitude and longitude")
+                    return
+                }
+                
+                self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: ["latitude":String(unwp_currLoc.latitude), "longitude":String(unwp_currLoc.longitude)]) { result in
+                    switch result{
+                    case .success(_):
+                        print("Success")
+                    case .failure(_):
+                        self.templateAlert(alertTitle: "Failed to send location", alertMessage: "API not responding")
+                    }
+                }
+            }
+        }
+    }
     
     
     
@@ -245,7 +268,9 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
         infoVC.modalTransitionStyle = .crossDissolve
         self.present(infoVC, animated: true, completion: nil)
     }
-        
+    
+
+    
     
     /* Action Methods */
     func update_arryDashboardTableObjects(){
@@ -272,6 +297,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
             }
         }
     }
+    
     
     /* Protocol methods */
     func didSelectDashboard(currentDashboardObjPos:Int){

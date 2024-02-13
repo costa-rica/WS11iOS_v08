@@ -19,9 +19,6 @@ class ManageUserVC: TemplateVC{
     let scrollView = UIScrollView()
     let contentView = UIView()
     
-//    var swtchEmailNotifications = UISwitch()
-//    var lblEmailNotifications = UILabel()
-//    var btnManageHealthSettings = UIButton()
     var lblFindSettingsScreenForAppleHealthPermission = UILabel()
     var lblPermissionsTitle = UILabel()
     
@@ -37,9 +34,6 @@ class ManageUserVC: TemplateVC{
     let lineViewDeleteUser = UIView()
     let lblDeleteUser=UILabel()
     var btnDeleteUser=UIButton()
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +52,6 @@ class ManageUserVC: TemplateVC{
     func setup_scrollView(){
         scrollView.translatesAutoresizingMaskIntoConstraints=false
         scrollView.accessibilityIdentifier = "scrollView"
-//        scrollView.backgroundColor = .
         view.addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: vwTopBar.bottomAnchor),
@@ -68,21 +61,21 @@ class ManageUserVC: TemplateVC{
         ])
     }
     private func setupContent() {
-//        let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
-
+        
         // Example content view constraints
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor) // Important for horizontal scrolling
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+            // Important for horizontal scrolling
             // Set the contentView's height constraint to be greater than or equal to the scrollView's height for vertical scrolling if needed
         ])
     }
-
+    
     
     func setup_lblFindSettingsScreenForAppleHealthPermission(){
         
@@ -92,7 +85,7 @@ class ManageUserVC: TemplateVC{
         lblPermissionsTitle.font = UIFont(name: "ArialRoundedMTBold", size: 25)
         lblPermissionsTitle.numberOfLines=0
         contentView.addSubview(lblPermissionsTitle)
-                
+        
         lblFindSettingsScreenForAppleHealthPermission.accessibilityIdentifier="lblFindSettingsScreenForAppleHealthPermission"
         lblFindSettingsScreenForAppleHealthPermission.translatesAutoresizingMaskIntoConstraints=false
         let text_for_message = "Go to Settings > Health > Data Access & Devices > WhatSticks11iOS to grant access.\n\nFor this app to work properly please make sure all data types are allowed."
@@ -101,13 +94,13 @@ class ManageUserVC: TemplateVC{
         contentView.addSubview(lblFindSettingsScreenForAppleHealthPermission)
         
         NSLayoutConstraint.activate([
-        lblPermissionsTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: heightFromPct(percent: 3)),
-        lblPermissionsTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
-        lblPermissionsTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2)),
-        
-        lblFindSettingsScreenForAppleHealthPermission.topAnchor.constraint(equalTo: lblPermissionsTitle.bottomAnchor, constant: heightFromPct(percent: 5)),
-        lblFindSettingsScreenForAppleHealthPermission.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
-        lblFindSettingsScreenForAppleHealthPermission.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2)),
+            lblPermissionsTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: heightFromPct(percent: 3)),
+            lblPermissionsTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
+            lblPermissionsTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2)),
+            
+            lblFindSettingsScreenForAppleHealthPermission.topAnchor.constraint(equalTo: lblPermissionsTitle.bottomAnchor, constant: heightFromPct(percent: 5)),
+            lblFindSettingsScreenForAppleHealthPermission.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
+            lblFindSettingsScreenForAppleHealthPermission.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2)),
         ])
     }
     
@@ -125,7 +118,7 @@ class ManageUserVC: TemplateVC{
         contentView.addSubview(lblLocationDayWeatherTitle)
         
         lblLocationDayWeatherDetails.accessibilityIdentifier="lblLocationDayWeatherDetails"
-        lblLocationDayWeatherDetails.text = "Allow What Sticks (WS) to collect your location to provide precise weather calculations for impacts on sleep and exercise. \n\n Turning this on will allow WS to collect this once a day."
+        lblLocationDayWeatherDetails.text = "Allow What Sticks (WS) to collect your location to provide precise weather calculations for impacts on sleep and exercise. \n\nTurning this on will allow WS to collect this once a day."
         lblLocationDayWeatherDetails.translatesAutoresizingMaskIntoConstraints=false
         lblLocationDayWeatherDetails.numberOfLines = 0
         contentView.addSubview(lblLocationDayWeatherDetails)
@@ -143,8 +136,7 @@ class ManageUserVC: TemplateVC{
         swtchLocationDayWeather.accessibilityIdentifier = "swtchLocationDayWeather"
         swtchLocationDayWeather.translatesAutoresizingMaskIntoConstraints = false
         swtchLocationDayWeather.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
-
-
+        
         stckVwLocationDayWeather.addArrangedSubview(swtchLocationDayWeather)
         
         btnUpdate.translatesAutoresizingMaskIntoConstraints=false
@@ -184,9 +176,9 @@ class ManageUserVC: TemplateVC{
             btnUpdate.topAnchor.constraint(equalTo: stckVwLocationDayWeather.bottomAnchor,constant: heightFromPct(percent: 4)),
             btnUpdate.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
             btnUpdate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2))
-            ])
+        ])
     }
-
+    
     
     func setup_btnDeleteUser(){
         lineViewDeleteUser.backgroundColor = UIColor(named: "lineColor")
@@ -234,10 +226,10 @@ class ManageUserVC: TemplateVC{
         lblLocationDayWeatherSwitch.text = "Track Location (\(switchStateText)): "
         if sender.isOn {
             print("Switch is on")
-            if locationFetcher == nil {
-                print("- instantiating locationFetcher <-------")
-                locationFetcher = LocationFetcher()
-            }
+//            if locationFetcher == nil {
+//                print("- instantiating locationFetcher <-------")
+//                locationFetcher = LocationFetcher()
+//            }
             
         } else {
             print("Switch is off")
@@ -252,22 +244,24 @@ class ManageUserVC: TemplateVC{
         self.showSpinner()
         
         if swtchLocationDayWeather.isOn{
-            locationFetcher.fetchLocation { result in
-                switch result{
-                case let .success(userLocation2D):
-                    self.updateDict = ["location_permission":"True","latitude":String(userLocation2D.latitude), "longitude":String(userLocation2D.longitude)]
-                    self.updateUserLocation()
-                case let .failure(error):
-                    self.removeSpinner()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.templateAlert(alertTitle: "Failed to get location", alertMessage: "\(error)")
-                    }
-                }
-            }
-
+            print("** Set up reoccuring location fetching")
+//            locationFetcher.fetchLocation { result in
+//                switch result{
+//                case let .success(userLocation2D):
+//                    self.updateDict = ["location_permission":"True","latitude":String(userLocation2D.latitude), "longitude":String(userLocation2D.longitude)]
+//                    self.updateUserLocation()
+//                case let .failure(error):
+//                    self.removeSpinner()
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                        self.templateAlert(alertTitle: "Failed to get location", alertMessage: "\(error)")
+//                    }
+//                }
+//            }
+            
         } else {
-            self.updateDict = ["location_permission":"False"]
-            updateUserLocation()
+            print("** warn user that app will not function properly")
+//            self.updateDict = ["location_permission":"False"]
+//            updateUserLocation()
         }
     }
     
@@ -299,25 +293,25 @@ class ManageUserVC: TemplateVC{
     }
     
     
-        
+    
     /* Action Methods */
     
     func updateUserLocation(){
-
-        userStore.callUpdateUser(updateDict: updateDict) { responseResult in
-            switch responseResult{
-            case .success(_):
-                self.removeSpinner()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.templateAlert(alertTitle: "Success!", alertMessage: "location status updated")
-                }
-            case let .failure(error):
-                self.removeSpinner()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.templateAlert(alertTitle: "Problem sending", alertMessage: "Error: \(error)")
-                }
-            }
-        }
+        print("set up function for reoccuring location call")
+//        userStore.callUpdateUser(updateDict: updateDict) { responseResult in
+//            switch responseResult{
+//            case .success(_):
+//                self.removeSpinner()
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.templateAlert(alertTitle: "Success!", alertMessage: "location status updated")
+//                }
+//            case let .failure(error):
+//                self.removeSpinner()
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.templateAlert(alertTitle: "Problem sending", alertMessage: "Error: \(error)")
+//                }
+//            }
+//        }
     }
     
     

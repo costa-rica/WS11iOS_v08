@@ -28,12 +28,11 @@ enum UserStoreError: Error {
 class UserStore {
     let fileManager:FileManager
     let documentsURL:URL
-    var user = User()
+    var user=User()
 //    {
 //        didSet{
-//            if rememberMe {
-//                writeObjectToJsonFile(object: user, filename: "user.json")
-//            }
+//            print("didSet, user.password: \(user.password!)")
+//            print("user.password: \(user.password!)")
 //        }
 //    }
     var arryDataSourceObjects:[DataSourceObject]?
@@ -59,13 +58,13 @@ class UserStore {
         return URLSession(configuration: config)
     }()
     init() {
-        self.user = User()
+//        self.user = User()
         self.fileManager = FileManager.default
         self.documentsURL = self.fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
-    func callUpdateUser(updateDict: [String:String], completion: @escaping (Result<String, Error>) -> Void) {
+    func callUpdateUser(endPoint: EndPoint, updateDict: [String:String], completion: @escaping (Result<String, Error>) -> Void) {
 //        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: ["timezone":user.timezone])
-        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: updateDict)
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: endPoint, body: updateDict)
         let task = session.dataTask(with: request) { data, response, error in
             guard let unwrappedData = data else {
                 print("no data response")
@@ -137,8 +136,13 @@ class UserStore {
     }
 
 
-    func callLoginUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        let result = requestStore.createRequestLogin(email: email, password: password)
+    func callLoginUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let unwp_email = user.email,
+              let unwp_password = user.password else {
+            completion(.failure(UserStoreError.failedToLogin))
+            return
+        }
+        let result = requestStore.createRequestLogin(email: unwp_email, password: unwp_password)
         
         switch result {
         case .success(let request):
@@ -316,9 +320,15 @@ class UserStore {
 extension UserStore{
     func writeObjectToJsonFile<T: Encodable>(object: T, filename: String) {
         var jsonData: Data!
+        
+        guard let unwp_email = user.email,
+              let unwp_password = user.password else {
+            return}
+        
         do {
             let jsonEncoder = JSONEncoder()
             jsonData = try jsonEncoder.encode(object)
+            print("* -- 2: successfully encoded User")
         } catch {
             print("Failed to encode json: \(error)")
             return
@@ -327,6 +337,8 @@ extension UserStore{
         let jsonFileURL = self.documentsURL.appendingPathComponent(filename)
         do {
             try jsonData.write(to: jsonFileURL)
+            print("* -- 3: successfully wrote json file")
+            print("wrote: \(unwp_email), \(unwp_password)")
         } catch {
             print("Error writing to file: \(error)")
         }
@@ -337,6 +349,7 @@ extension UserStore{
             try fileManager.removeItem(at: jsonFileURL)
             self.boolDashObjExists=false
             self.boolMultipleDashObjExist=false
+            print("deleted user.json")
         } catch {
             print("No no \(filename) file exists")
         }
@@ -409,7 +422,7 @@ extension UserStore{
 //            OperationQueue.main.addOperation {
             
             self.user = try decoder.decode(User.self, from:jsonData)
-            print("-- checkUserJson -- self.user email: \(self.user.email)")
+//            print("-- checkUserJson -- self.user email: \(self.user.email)")
             // OperationQueue.main.addOperation  {
             completion(.success(true))
             // }

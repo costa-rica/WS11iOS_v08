@@ -57,9 +57,8 @@ class LoginVC: TemplateVC {
         self.healthDataStore = HealthDataStore()
         self.healthDataStore.requestStore = self.requestStore
         self.setupIsDev(urlStore: requestStore.urlStore)
-//        self.locationFetcher = LocationFetcher()
-//        self.locationFetcher.fetchLocation()
-        
+        self.locationFetcher = LocationFetcher()
+        self.locationFetcher.requestLocationPermission()
         // Set up tap gesture to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         view.addGestureRecognizer(tapGesture)
@@ -123,7 +122,6 @@ class LoginVC: TemplateVC {
         lblScreenNameTitle.topAnchor.constraint(equalTo: vwTopBar.bottomAnchor, constant: heightFromPct(percent: bodyTopPaddingPercentage/4)).isActive=true
         lblScreenNameTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: widthFromPct(percent: bodySidePaddingPercentage)).isActive=true
     }
-    
     func setup_stckVwLogin(){
         lblEmail.text = "Email"
         lblPassword.text = "Password"
@@ -222,16 +220,36 @@ class LoginVC: TemplateVC {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
             sender.transform = .identity
         }, completion: nil)
+        guard let unwp_email = txtEmail.text,
+              let unwp_password = txtPassword.text else {
+            self.templateAlert(alertTitle: "Unsuccessful Login", alertMessage: "Must enter email and password")
+            return}
+        print("---- Login Credentials ---")
+        print("email: \(unwp_email)")
+        print("passwor: \(unwp_password)")
+
+        self.userStore.user.email = unwp_email
+        self.userStore.user.password = unwp_password
+        
+
+
+        self.userStore.deleteJsonFile(filename: "user.json")
+        
         requestLogin()
     }
     
     func requestLogin(){
-        userStore.callLoginUser(email: txtEmail.text ?? "", password: txtPassword.text ?? "") { responseResultLogin in
+        guard let unwp_email = txtEmail.text,
+              let unwp_password = txtPassword.text else {
+            return}
+
+        print("requestLogin: \(unwp_email), \(unwp_password)")
+        userStore.callLoginUser() { responseResultLogin in
             DispatchQueue.main.async {
             switch responseResultLogin{
             case .success(_):
                 self.requestStore.token = self.userStore.user.token
-
+                self.userStore.user.password = unwp_password //<-- override passwrod
                 // Sentry event info only for production
                 if self.requestStore.urlStore.apiBase == .prod{
                     let event = Event(level: .info)
@@ -246,7 +264,9 @@ class LoginVC: TemplateVC {
                     self.token = unwp_token// <-- last because action follows this assignment via didSet()
                 }
                 if self.swRememberMe.isOn{
-                    self.userStore.writeObjectToJsonFile(object: self.userStore.user, filename: "user.json")
+                    print("* -- 1 accessing self.userStore.writeObjectToJsonFile")
+                    print("* -- 1 requestLogin: \(unwp_email), \(unwp_password)")
+//                    self.userStore.writeObjectToJsonFile(object: self.userStore.user, filename: "user.json")
                 }
                 
             case .failure(_):
@@ -318,6 +338,7 @@ class LoginVC: TemplateVC {
         stckVwRememberMe.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: widthFromPct(percent: -bodySidePaddingPercentage)).isActive=true
         
         swRememberMe.isOn = true
+        self.userStore.rememberMe = true
         
     }
     private func setupForgotPasswordButton() {
@@ -369,7 +390,6 @@ class LoginVC: TemplateVC {
     func setup_stckVwDevOrProd() {
         stckVwDevOrProd = UIStackView()
         
-        
         lblDevOrProd.text = "Production Server"
         stckVwDevOrProd.spacing = 10
         stckVwDevOrProd.addArrangedSubview(lblDevOrProd)
@@ -406,6 +426,31 @@ class LoginVC: TemplateVC {
     }
     
     
+//    /* Location Method*/
+//    func getLocationPermission(){
+//        locationFetcher.requestLocationPermission()
+//        }
+    
+//    func updateUserLocation(){
+//        
+//        userStore.callUpdateUser(updateDict: updateDict) { responseResult in
+//            switch responseResult{
+//            case .success(_):
+//                self.removeSpinner()
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.templateAlert(alertTitle: "Success!", alertMessage: "location status updated")
+//                }
+//            case let .failure(error):
+//                self.removeSpinner()
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    self.templateAlert(alertTitle: "Problem sending", alertMessage: "Error: \(error)")
+//                }
+//            }
+//        }
+//    }
+    
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "goToRegisterVC"){
             let registerVC = segue.destination as! RegisterVC
@@ -419,6 +464,7 @@ class LoginVC: TemplateVC {
             dashboardVC.requestStore = self.requestStore
             dashboardVC.appleHealthDataFetcher = self.appleHealthDataFetcher
             dashboardVC.healthDataStore = self.healthDataStore
+            dashboardVC.locationFetcher = self.locationFetcher
             self.token = "token"// reset login
         }
         if (segue.identifier == "goToForgotPasswordVC"){

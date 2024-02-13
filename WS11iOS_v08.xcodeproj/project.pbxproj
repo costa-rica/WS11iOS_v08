@@ -510,6 +510,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "What Sticks";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "What Sticks uses your location to determine weather statistics";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "What Sticks uses your location to determine weather statistics";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -545,6 +547,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "What Sticks";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Allow What Sticks to collect Health Data for analysis.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "What Sticks uses your location to determine weather statistics";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "What Sticks uses your location to determine weather statistics";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
