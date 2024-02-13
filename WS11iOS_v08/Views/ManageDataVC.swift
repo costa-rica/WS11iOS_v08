@@ -13,8 +13,7 @@ class ManageDataVC: TemplateVC, ManageDataVCDelegate{
     var requestStore: RequestStore!
     var appleHealthDataFetcher:AppleHealthDataFetcher!
     var healthDataStore: HealthDataStore!
-//    var btnGoToManageDataVC=UIButton()
-//    var btnGoToLoginVC=UIButton()
+    var locationFetcher: LocationFetcher!
     var tblDataSources=UITableView()
     var segueSource:String?
     var btnGoToManageUser=UIButton()
@@ -158,6 +157,7 @@ class ManageDataVC: TemplateVC, ManageDataVCDelegate{
             manageUserVC.requestStore = self.requestStore
             manageUserVC.healthDataStore = self.healthDataStore
             manageUserVC.appleHealthDataFetcher = self.appleHealthDataFetcher
+            manageUserVC.locationFetcher = self.locationFetcher
         }
     }
     

@@ -62,37 +62,7 @@ class UserStore {
         self.fileManager = FileManager.default
         self.documentsURL = self.fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
-    func callUpdateUser(endPoint: EndPoint, updateDict: [String:String], completion: @escaping (Result<String, Error>) -> Void) {
-//        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: ["timezone":user.timezone])
-        let request = requestStore.createRequestWithTokenAndBody(endPoint: endPoint, body: updateDict)
-        let task = session.dataTask(with: request) { data, response, error in
-            guard let unwrappedData = data else {
-                print("no data response")
-                completion(.failure(UserStoreError.failedToReceiveServerResponse))
-                return
-            }
-            do {
-                if let jsonResult = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: Any] {
-                    print("json serialized well")
-                    if let message = jsonResult["message"] as? String {
-                        OperationQueue.main.addOperation {
-                            completion(.success(message))
-                        }
-                    } else {
-                        OperationQueue.main.addOperation {
-                            completion(.failure(UserStoreError.failedToUpdateUser))
-                        }
-                    }
-                } else {
-                    throw UserStoreError.failedDecode
-                }
-            } catch {
-                print("---- UserStore.failedToUpdateUser: Failed to read response")
-                completion(.failure(UserStoreError.failedDecode))
-            }
-        }
-        task.resume()
-    }
+
     func callRegisterNewUser(email: String, password: String, lat: Double, lon: Double, completion: @escaping (Result<[String: String], Error>) -> Void) {
         let latString = String(lat)
         let lonString = String(lon)
@@ -321,14 +291,14 @@ extension UserStore{
     func writeObjectToJsonFile<T: Encodable>(object: T, filename: String) {
         var jsonData: Data!
         
-        guard let unwp_email = user.email,
-              let unwp_password = user.password else {
-            return}
+//        guard let unwp_email = user.email,
+//              let unwp_password = user.password else {
+//            return}
         
         do {
             let jsonEncoder = JSONEncoder()
             jsonData = try jsonEncoder.encode(object)
-            print("* -- 2: successfully encoded User")
+//            print("* -- 2: successfully encoded User")
         } catch {
             print("Failed to encode json: \(error)")
             return
@@ -337,8 +307,8 @@ extension UserStore{
         let jsonFileURL = self.documentsURL.appendingPathComponent(filename)
         do {
             try jsonData.write(to: jsonFileURL)
-            print("* -- 3: successfully wrote json file")
-            print("wrote: \(unwp_email), \(unwp_password)")
+//            print("* -- 3: successfully wrote json file")
+//            print("wrote: \(unwp_email), \(unwp_password)")
         } catch {
             print("Error writing to file: \(error)")
         }
@@ -440,5 +410,87 @@ extension UserStore{
         
     }
     
+}
+
+// Send location
+extension UserStore{
+    
+    func callUpdateUser(endPoint: EndPoint, updateDict: [String:String], completion: @escaping (Result<String, Error>) -> Void) {
+//        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user, body: ["timezone":user.timezone])
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: endPoint, body: updateDict)
+        let task = session.dataTask(with: request) { data, response, error in
+            guard let unwrappedData = data else {
+                print("no data response")
+                completion(.failure(UserStoreError.failedToReceiveServerResponse))
+                return
+            }
+            do {
+                if let jsonResult = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: Any] {
+                    print("json serialized well")
+                    if let message = jsonResult["message"] as? String {
+                        OperationQueue.main.addOperation {
+                            completion(.success(message))
+                        }
+                    } else {
+                        OperationQueue.main.addOperation {
+                            completion(.failure(UserStoreError.failedToUpdateUser))
+                        }
+                    }
+                } else {
+                    throw UserStoreError.failedDecode
+                }
+            } catch {
+                print("---- UserStore.failedToUpdateUser: Failed to read response")
+                completion(.failure(UserStoreError.failedDecode))
+            }
+        }
+        task.resume()
+    }
+    
+    
+    func callSendUserLocationJsonData(dictSendUserLocation:DictSendUserLocation, completion: @escaping (Bool) -> Void){
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: .receive_apple_qty_cat_data, body: dictSendUserLocation)
+        
+        let task = requestStore.session.dataTask(with: request) { data, response, error in
+            // Handle potential error from the data task
+            if let error = error {
+                print("UserStore.callSendUserLocationJsonData received an error. Error: \(error)")
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
+            }
+            guard let unwrapped_data = data else {
+                // No data scenario
+                DispatchQueue.main.async {
+                    completion(false)
+                    print("UserStore.callSendUserLocationJsonData received unexpected json response from WSAPI. URLError(.badServerResponse): \(URLError(.badServerResponse))")
+                }
+                return
+            }
+            do {
+                if let jsonResult = try JSONSerialization.jsonObject(with: unwrapped_data, options: []) as? [String: String] {
+                    print("-- successful send of user_location.json data --")
+                    print(jsonResult)
+                    DispatchQueue.main.async {
+                        completion(true)
+                    }
+                } else {
+                    // Data is not in the expected format
+                    DispatchQueue.main.async {
+                        completion(false)
+                        print("UserStore.callSendUserLocationJsonData received unexpected json response from WSAPI. URLError(.cannotParseResponse): \(URLError(.cannotParseResponse))")
+                    }
+                }
+            } catch {
+                // Data parsing error
+                DispatchQueue.main.async {
+                    completion(false)
+                    print("UserStore.callSendUserLocationJsonData produced an error while parsing. Error: \(error)")
+                }
+            }
+        }
+        task.resume()
+    }
 }
 

@@ -118,7 +118,7 @@ class ManageUserVC: TemplateVC{
         contentView.addSubview(lblLocationDayWeatherTitle)
         
         lblLocationDayWeatherDetails.accessibilityIdentifier="lblLocationDayWeatherDetails"
-        lblLocationDayWeatherDetails.text = "Allow What Sticks (WS) to collect your location to provide precise weather calculations for impacts on sleep and exercise. \n\nTurning this on will allow WS to collect this once a day."
+        lblLocationDayWeatherDetails.text = "Allow What Sticks (WS) to collect your location to provide weather and timezone calculations for impacts on sleep and exercise. \n\nTurning this on will allow WS to collect your location daily."
         lblLocationDayWeatherDetails.translatesAutoresizingMaskIntoConstraints=false
         lblLocationDayWeatherDetails.numberOfLines = 0
         contentView.addSubview(lblLocationDayWeatherDetails)
@@ -139,18 +139,21 @@ class ManageUserVC: TemplateVC{
         
         stckVwLocationDayWeather.addArrangedSubview(swtchLocationDayWeather)
         
-        btnUpdate.translatesAutoresizingMaskIntoConstraints=false
-        btnUpdate.accessibilityIdentifier="btnUpdate"
-        btnUpdate.addTarget(self, action: #selector(self.touchDown(_:)), for: .touchDown)
-        btnUpdate.addTarget(self, action: #selector(touchUpInside_btnUpdateUser(_:)), for: .touchUpInside)
-        btnUpdate.backgroundColor = .systemBlue
-        btnUpdate.layer.cornerRadius = 10
-        btnUpdate.setTitle(" Update Account ", for: .normal)
-        contentView.addSubview(btnUpdate)
+//        btnUpdate.translatesAutoresizingMaskIntoConstraints=false
+//        btnUpdate.accessibilityIdentifier="btnUpdate"
+//        btnUpdate.addTarget(self, action: #selector(self.touchDown(_:)), for: .touchDown)
+//        btnUpdate.addTarget(self, action: #selector(touchUpInside_btnUpdateUser(_:)), for: .touchUpInside)
+//        btnUpdate.backgroundColor = .systemBlue
+//        btnUpdate.layer.cornerRadius = 10
+//        btnUpdate.setTitle(" Update Account ", for: .normal)
+//        contentView.addSubview(btnUpdate)
         
         // Set Location Switch
-        if let unwp_user_loc_permission = userStore.user.location_permission {
+        if let unwp_user_loc_permission = userStore.user.location_reoccuring_permission {
             swtchLocationDayWeather.isOn = unwp_user_loc_permission
+            if unwp_user_loc_permission{
+                locationFetcher.startMonitoringLocationChanges()
+            }
         }
         // Set Location Label
         let initialSwitchStateText = swtchLocationDayWeather.isOn ? "on" : "off"
@@ -173,9 +176,9 @@ class ManageUserVC: TemplateVC{
             stckVwLocationDayWeather.topAnchor.constraint(equalTo: lblLocationDayWeatherDetails.bottomAnchor, constant: heightFromPct(percent: 2)),
             stckVwLocationDayWeather.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: widthFromPct(percent: -2)),
             
-            btnUpdate.topAnchor.constraint(equalTo: stckVwLocationDayWeather.bottomAnchor,constant: heightFromPct(percent: 4)),
-            btnUpdate.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
-            btnUpdate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2))
+//            btnUpdate.topAnchor.constraint(equalTo: stckVwLocationDayWeather.bottomAnchor,constant: heightFromPct(percent: 4)),
+//            btnUpdate.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: widthFromPct(percent: -2)),
+//            btnUpdate.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: widthFromPct(percent: 2))
         ])
     }
     
@@ -202,7 +205,7 @@ class ManageUserVC: TemplateVC{
         contentView.addSubview(btnDeleteUser)
         
         NSLayoutConstraint.activate([
-            lineViewDeleteUser.bottomAnchor.constraint(equalTo: btnUpdate.bottomAnchor, constant: heightFromPct(percent: 5)),
+            lineViewDeleteUser.bottomAnchor.constraint(equalTo: swtchLocationDayWeather.bottomAnchor, constant: heightFromPct(percent: 5)),
             lineViewDeleteUser.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             lineViewDeleteUser.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             lineViewDeleteUser.heightAnchor.constraint(equalToConstant: 1), // Set line thickness
@@ -226,44 +229,99 @@ class ManageUserVC: TemplateVC{
         lblLocationDayWeatherSwitch.text = "Track Location (\(switchStateText)): "
         if sender.isOn {
             print("Switch is on")
-//            if locationFetcher == nil {
-//                print("- instantiating locationFetcher <-------")
-//                locationFetcher = LocationFetcher()
-//            }
+            locationFetcher.startMonitoringLocationChanges()
+            
+            self.showSpinner()
+            
+            // Get user's longitude and latitude once
+            locationFetcher.fetchLocation { locationExists in
+                if locationExists{
+                    if let unwp_lat = self.locationFetcher.currentLocation?.latitude,
+                       let unwp_lon = self.locationFetcher.currentLocation?.longitude{
+                        let updateDict = ["latitude":String(unwp_lat),"longitude":String(unwp_lon),"location_permission":"True","location_reoccuring_permission":"True"]
+                        
+                        self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
+                            switch resultString{
+                            case .success(_):
+                                self.removeSpinner()
+                                self.templateAlert(alertTitle: "Success!", alertMessage: "")
+                            case let .failure(error):
+                                self.removeSpinner()
+                                self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
+                            }
+                        }
+                    }
+                }
+            }
+            
             
         } else {
             print("Switch is off")
-        }
-    }
-    @objc func touchUpInside_btnUpdateUser(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
-            sender.transform = .identity
-        }, completion: nil)
-        print("call update user")
-        
-        self.showSpinner()
-        
-        if swtchLocationDayWeather.isOn{
-            print("** Set up reoccuring location fetching")
-//            locationFetcher.fetchLocation { result in
-//                switch result{
-//                case let .success(userLocation2D):
-//                    self.updateDict = ["location_permission":"True","latitude":String(userLocation2D.latitude), "longitude":String(userLocation2D.longitude)]
-//                    self.updateUserLocation()
-//                case let .failure(error):
-//                    self.removeSpinner()
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                        self.templateAlert(alertTitle: "Failed to get location", alertMessage: "\(error)")
-//                    }
-//                }
-//            }
+            alertTurnOffLocationTrackingConfirmation()
+
             
-        } else {
-            print("** warn user that app will not function properly")
-//            self.updateDict = ["location_permission":"False"]
-//            updateUserLocation()
         }
     }
+//    @objc func touchUpInside_btnUpdateUser(_ sender: UIButton) {
+//        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
+//            sender.transform = .identity
+//        }, completion: nil)
+//        print("call update user")
+//        
+//
+//        
+//        if swtchLocationDayWeather.isOn{
+//            print("** Set up reoccuring location fetching")
+//            // Start spinner
+////            self.showSpinner()
+////            
+////            // Get user's longitude and latitude once
+////            locationFetcher.fetchLocation { locationExists in
+////                if locationExists{
+////                    if let unwp_lat = self.locationFetcher.currentLocation?.latitude,
+////                       let unwp_lon = self.locationFetcher.currentLocation?.longitude{
+////                        let updateDict = ["latitude":String(unwp_lat),"longitude":String(unwp_lon),"location_permission":"True","location_reoccuring_permission":"True"]
+////                        
+////                        self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
+////                            switch resultString{
+////                            case let .success(response_string):
+////                                self.removeSpinner()
+////                                self.templateAlert(alertTitle: "Success!", alertMessage: "")
+////                            case let .failure(error):
+////                                self.removeSpinner()
+////                                self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
+////                            }
+////                        }
+////                    }
+////                }
+////            }
+//            
+//            
+//        } else {
+//            print("** warn user that app will not function properly")
+//            
+//            // Are You Sure? alerting user app will not calculate correctly without location tracking.
+//            
+////            // Send API permission to track off
+////            var updateDict = ["location_permission":"False","location_reoccuring_permission":"False"]
+////            if self.locationFetcher.userLocationManagerAuthStatus == "Authorized When In Use"{
+////                updateDict["location_permission"]="True"
+////            }
+////            self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
+////                switch resultString{
+////                case .success(_):
+////                    print("-successfully updated")
+////                case .failure(_):
+////                    print("-failed to update user status")
+////                }
+////            }
+////            
+//            // wait for response
+//            
+//            // end spinner
+//            
+//        }
+//    }
     
     @objc func touchUpInside_btnDeleteUser(_ sender: UIButton) {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: {
@@ -292,7 +350,52 @@ class ManageUserVC: TemplateVC{
         present(alertController, animated: true, completion: nil)
     }
     
-    
+    // Used for delete user
+    @objc func alertTurnOffLocationTrackingConfirmation() {
+        let alertController = UIAlertController(title: "Are you sure?", message: "Turning off location tracking will reduce accuracy.", preferredStyle: .alert)
+        // 'Yes' action
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
+            // Handle the 'Yes' action here
+            self?.showSpinner()
+            self?.locationFetcher.stopMonitoringLocationChanges()
+            
+            // Send API permission to track off
+            var updateDict = ["location_permission":"False","location_reoccuring_permission":"False"]
+            if self!.locationFetcher.userLocationManagerAuthStatus == "Authorized When In Use"{
+                updateDict["location_permission"]="True"
+            }
+            self!.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
+                switch resultString{
+                case .success(_):
+                    print("-successfully updated")
+                    self?.removeSpinner()
+                case .failure(_):
+                    print("-failed to update user status")
+                    self?.removeSpinner()
+                    self?.templateAlert(alertTitle: "Unsuccessful update", alertMessage: "Try again or email nrodrig1@gmail.com.")
+                    
+                    self?.swtchLocationDayWeather.isOn=true
+                    // Set Location Label
+                    let initialSwitchStateText = (self?.swtchLocationDayWeather.isOn)! ? "on" : "off"
+                    self?.lblLocationDayWeatherSwitch.text = "Track Location (\(initialSwitchStateText)): "
+
+                }
+            }
+            
+            
+        }
+        // 'No' action
+//        let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let noAction = UIAlertAction(title: "No", style: .cancel) {[weak self] _ in
+            self?.swtchLocationDayWeather.isOn=true
+            // Set Location Label
+            let initialSwitchStateText = (self?.swtchLocationDayWeather.isOn)! ? "on" : "off"
+            self?.lblLocationDayWeatherSwitch.text = "Track Location (\(initialSwitchStateText)): "
+        }
+        alertController.addAction(yesAction)
+        alertController.addAction(noAction)
+        present(alertController, animated: true, completion: nil)
+    }
     
     /* Action Methods */
     

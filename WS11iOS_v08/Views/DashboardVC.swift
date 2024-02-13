@@ -83,7 +83,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
     }
     
     func setup_lblDashboardTitle_isNil(){
-        print("This is lblDashboardTitle is nil")
+//        print("This is lblDashboardTitle is nil")
         lblDashboardTitle=UILabel()
         lblDashboardTitle!.accessibilityIdentifier="lblDashboardTitle"
         lblDashboardTitle!.translatesAutoresizingMaskIntoConstraints=false
@@ -329,6 +329,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
             manageDataVC.appleHealthDataFetcher = self.appleHealthDataFetcher
             manageDataVC.healthDataStore = self.healthDataStore
             manageDataVC.requestStore = self.requestStore
+            manageDataVC.locationFetcher = self.locationFetcher
         }
     }
     

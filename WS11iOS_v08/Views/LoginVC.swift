@@ -224,16 +224,9 @@ class LoginVC: TemplateVC {
               let unwp_password = txtPassword.text else {
             self.templateAlert(alertTitle: "Unsuccessful Login", alertMessage: "Must enter email and password")
             return}
-        print("---- Login Credentials ---")
-        print("email: \(unwp_email)")
-        print("passwor: \(unwp_password)")
 
         self.userStore.user.email = unwp_email
         self.userStore.user.password = unwp_password
-        
-
-
-        self.userStore.deleteJsonFile(filename: "user.json")
         
         requestLogin()
     }
@@ -250,6 +243,7 @@ class LoginVC: TemplateVC {
             case .success(_):
                 self.requestStore.token = self.userStore.user.token
                 self.userStore.user.password = unwp_password //<-- override passwrod
+//                print("--- user's location_reoccuring_permission: \(self.userStore.user.location_reoccuring_permission)")
                 // Sentry event info only for production
                 if self.requestStore.urlStore.apiBase == .prod{
                     let event = Event(level: .info)
@@ -262,11 +256,6 @@ class LoginVC: TemplateVC {
                 }
                 if let unwp_token = self.userStore.user.token{
                     self.token = unwp_token// <-- last because action follows this assignment via didSet()
-                }
-                if self.swRememberMe.isOn{
-                    print("* -- 1 accessing self.userStore.writeObjectToJsonFile")
-                    print("* -- 1 requestLogin: \(unwp_email), \(unwp_password)")
-//                    self.userStore.writeObjectToJsonFile(object: self.userStore.user, filename: "user.json")
                 }
                 
             case .failure(_):
