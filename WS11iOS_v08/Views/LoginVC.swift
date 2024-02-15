@@ -92,7 +92,7 @@ class LoginVC: TemplateVC {
             }
         }
         userStore.checkDashboardJson { result in
-            print("- func setup_checkFiles() ")
+//            print("- func setup_checkFiles() ")
             DispatchQueue.main.async{
                 switch result{
                 case .success(_):
@@ -232,18 +232,18 @@ class LoginVC: TemplateVC {
     }
     
     func requestLogin(){
-        guard let unwp_email = txtEmail.text,
+        guard let _ = txtEmail.text,
               let unwp_password = txtPassword.text else {
             return}
 
-        print("requestLogin: \(unwp_email), \(unwp_password)")
+//        print("requestLogin: \(unwp_email), \(unwp_password)")
         userStore.callLoginUser() { responseResultLogin in
             DispatchQueue.main.async {
             switch responseResultLogin{
             case .success(_):
                 self.requestStore.token = self.userStore.user.token
                 self.userStore.user.password = unwp_password //<-- override passwrod
-//                print("--- user's location_reoccuring_permission: \(self.userStore.user.location_reoccuring_permission)")
+
                 // Sentry event info only for production
                 if self.requestStore.urlStore.apiBase == .prod{
                     let event = Event(level: .info)
@@ -254,8 +254,28 @@ class LoginVC: TemplateVC {
                         SentrySDK.capture(event: event)
                     }
                 }
-                if let unwp_token = self.userStore.user.token{
-                    self.token = unwp_token// <-- last because action follows this assignment via didSet()
+                
+                // Send user_location.json file if exists
+                self.locationFetcher.checkUserLocationJson { resultBool in
+                    switch resultBool{
+                    case true:
+                        print("file exists")
+                        let dictSendUserLocation = DictSendUserLocation()
+                        dictSendUserLocation.timestamp_utc = getCurrentUtcDateString()
+                        dictSendUserLocation.user_location = self.locationFetcher.arryHistUserLocation
+                        self.userStore.callSendUserLocationJsonData(dictSendUserLocation: dictSendUserLocation) { resultBool_SendLocation in
+                            switch resultBool_SendLocation{
+                            case true:
+                                self.userStore.deleteJsonFile(filename: "user_locations.json")
+                                self.setLoginVCToken()
+                            case false:
+                                self.setLoginVCToken()
+                            }
+                        }
+                    case false:
+                        print("file does not exist don't send")
+                        self.setLoginVCToken()
+                    }
                 }
                 
             case .failure(_):
@@ -264,6 +284,12 @@ class LoginVC: TemplateVC {
             }
         }
     }
+    func setLoginVCToken(){
+        if let unwp_token = self.userStore.user.token{
+            self.token = unwp_token// <-- last because action follows this assignment via didSet()
+        }
+    }
+    
     func setDashboardObject(){
         userStore.checkDashboardJson { result in
             print("* func setDashboardObject() checking: userStore.checkDashboardJson")

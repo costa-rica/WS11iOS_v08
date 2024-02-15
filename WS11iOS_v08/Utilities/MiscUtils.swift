@@ -102,7 +102,7 @@ extension UIColor {
     }
 }
 
-
+// This is not always utc timezone
 func timeStampsForFileNames() -> String {
     let currentDate = Date()
     let dateFormatter = DateFormatter()
@@ -126,4 +126,23 @@ func loadTimezones() -> [String] {
         }
     }
     return timezones
+}
+
+func getCurrentUtcDateString() -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyyMMdd-HHmm"
+    dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+    let dateString = dateFormatter.string(from: Date())
+    return dateString
+}
+
+func getCurrentLocalDateString() -> String {
+    let now = Date() // Get the current date and time
+    let formatter = DateFormatter() // Initialize a DateFormatter
+    formatter.timeZone = TimeZone.current // Set the formatter's timezone to the current timezone
+    formatter.locale = Locale.current // Use the current locale
+    formatter.dateFormat = "yyyy-MM-dd" // Set the format of the date string
+    
+    let dateString = formatter.string(from: now) // Convert the date to a string
+    return dateString // Return the formatted date string
 }

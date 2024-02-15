@@ -29,7 +29,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
         self.setupIsDev(urlStore: requestStore.urlStore)
         self.lblUsername.text = userStore.user.username
         self.lblScreenName.text = "Dashboard"
-        print("- in DashboardVC viewDidLoad -")
+//        print("- in DashboardVC viewDidLoad -")
         self.setup_btnGoToManageDataVC()
 //        self.getLocationPermission()
     }
@@ -49,17 +49,17 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
             if tblDashboard == nil {
                 setup_tblDashboard_isNil()
             }
-            if tblDashboard != nil {
-                setup_tblDashboard_isNotNil()
-            }
+//            if tblDashboard != nil {
+//                setup_tblDashboard_isNotNil()
+//            }
             
             if userStore.boolMultipleDashObjExist{
                 if btnDashboards == nil {
                     setup_btnDashboards_isNil()
                 }
-                if btnDashboards != nil {
-                    setup_btnDashboards_isNotNil()
-                }
+//                if btnDashboards != nil {
+//                    setup_btnDashboards_isNotNil()
+//                }
             }
             
             
@@ -122,7 +122,7 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
     }
     
     func setup_tblDashboard_isNil(){
-        print("This is tblDashboard is nil")
+//        print("This is tblDashboard is nil")
         self.tblDashboard = UITableView()
         self.tblDashboard!.accessibilityIdentifier = "tblDashboard"
         self.tblDashboard!.translatesAutoresizingMaskIntoConstraints=false
@@ -143,12 +143,12 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
         refreshControlTblDashboard!.addTarget(self, action: #selector(self.refresh_tblDashboardData(_:)), for: .valueChanged)
         self.tblDashboard!.refreshControl = refreshControlTblDashboard!
     }
-    func setup_tblDashboard_isNotNil(){
-        print("This is tblDashboard not nil")
-    }
+//    func setup_tblDashboard_isNotNil(){
+//        print("This is tblDashboard not nil")
+//    }
     
     func setup_btnDashboards_isNil(){
-        print("This is tblDashboard is nil")
+//        print("This is tblDashboard is nil")
         btnDashboards=UIButton()
         btnDashboards!.accessibilityIdentifier="btnDashboards"
         btnDashboards!.translatesAutoresizingMaskIntoConstraints=false
@@ -163,9 +163,9 @@ class DashboardVC: TemplateVC, SelectDashboardVCDelegate{
             btnDashboards!.leadingAnchor.constraint(equalTo: vwFooter.leadingAnchor, constant: widthFromPct(percent: 2)),
         ])
     }
-    func setup_btnDashboards_isNotNil(){
-        print("This is tblDashboard not nil")
-    }
+//    func setup_btnDashboards_isNotNil(){
+//        print("This is tblDashboard not nil")
+//    }
     
     func setup_btnRefreshDashboard_isNil(){
         self.btnRefreshDashboard = UIButton()

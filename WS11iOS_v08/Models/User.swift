@@ -20,12 +20,13 @@ class User: Codable {
     var timezone: String?
     var location_permission: Bool?
     var location_reoccuring_permission: Bool?
-
+    var last_location_date: String?
+    
     // Custom keys to handle JSON decoding
     private enum CodingKeys: String, CodingKey {
-        case id, email, password, username, token, admin, oura_token, latitude, longitude, timezone, location_permission, location_reoccuring_permission
+        case id, email, password, username, token, admin, oura_token, latitude, longitude, timezone, location_permission, location_reoccuring_permission, last_location_date
     }
-
+    
     // Custom initializer to decode
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -38,15 +39,15 @@ class User: Codable {
         latitude = try container.decodeIfPresent(String.self, forKey: .latitude)
         longitude = try container.decodeIfPresent(String.self, forKey: .longitude)
         timezone = try container.decodeIfPresent(String.self, forKey: .timezone)
-
+        last_location_date = try container.decodeIfPresent(String.self, forKey: .last_location_date)
+        
         // Decode 'admin' and 'location_permission' as String and convert to Bool
         if let adminString = try container.decodeIfPresent(String.self, forKey: .admin) {
-            print("- user custom init adminString -")
             admin = adminString.lowercased() == "true"
         } else {
             admin = try container.decodeIfPresent(Bool.self, forKey: .admin)
         }
-
+        
         if let locationPermissionString = try container.decodeIfPresent(String.self, forKey: .location_permission) {
             location_permission = locationPermissionString.lowercased() == "true"
         } else {
@@ -71,8 +72,9 @@ class User: Codable {
          longitude: String? = "",
          timezone: String? = "",
          location_permission: Bool? = false,
-         location_reoccuring_permission: Bool? = false) {
-
+         location_reoccuring_permission: Bool? = false,
+         last_location_date: String? = ""){
+        
         self.id = id
         self.email = email
         self.password = password
@@ -85,8 +87,9 @@ class User: Codable {
         self.timezone = timezone
         self.location_permission = location_permission
         self.location_reoccuring_permission = location_reoccuring_permission
+        self.last_location_date = last_location_date
     }
-
+    
 }
 
 extension User {
@@ -104,6 +107,7 @@ extension User {
         try container.encode(latitude ?? "", forKey: .latitude)
         try container.encode(longitude ?? "", forKey: .longitude)
         try container.encode(timezone ?? "", forKey: .timezone)
+        try container.encode(last_location_date ?? "", forKey: .last_location_date)
         
         // Convert booleans to strings
         try container.encode(admin?.description ?? "false", forKey: .admin)

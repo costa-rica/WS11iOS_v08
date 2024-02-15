@@ -449,7 +449,7 @@ extension UserStore{
     
     
     func callSendUserLocationJsonData(dictSendUserLocation:DictSendUserLocation, completion: @escaping (Bool) -> Void){
-        let request = requestStore.createRequestWithTokenAndBody(endPoint: .receive_apple_qty_cat_data, body: dictSendUserLocation)
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: .update_user_location_with_user_location_json, body: dictSendUserLocation)
         
         let task = requestStore.session.dataTask(with: request) { data, response, error in
             // Handle potential error from the data task
