@@ -223,59 +223,57 @@ class ManageUserVC: TemplateVC{
     func manageLocationCollection(){
         print("- accessed manageLocationCollection")
         if locationFetcher.userLocationManagerAuthStatus == "Authorized Always"{
-//            print("- accessed manageLocationCollection 4")
             locationFetcher.fetchLocation { locationExists in
-//                print("- accessed manageLocationCollection 2")
                 if locationExists{
                     if let unwp_lat = self.locationFetcher.currentLocation?.latitude,
                        let unwp_lon = self.locationFetcher.currentLocation?.longitude{
                         let updateDict = ["latitude":String(unwp_lat),"longitude":String(unwp_lon),"location_permission":"True","location_reoccuring_permission":"True"]
-                        self.sendUpdateDictToApi(updateDict: updateDict)
+                        print("-Scenario 1: locationExists and there are longitude and latitude; status = Authorized Always")
+                        self.sendUpdateDictToApi(updateDict: updateDict)// <-- start print statements here
                     }
                     else {
+                        print("-Scenario 2: locationExists BUT there are no longitude and latitude; status = Authorized Always ")
                         let updateDict = ["location_permission":"True","location_reoccuring_permission":"True"]
                         self.sendUpdateDictToApi(updateDict: updateDict)
                         
                     }
                 }
                 else {
+                    print("-Scenario 3: NO locationExists; status = Authorized Always")
                     let updateDict = ["location_permission":"True","location_reoccuring_permission":"True"]
                     self.sendUpdateDictToApi(updateDict: updateDict)
                 }
             }
         }
         else if locationFetcher.userLocationManagerAuthStatus == "Authorized When In Use" {
-//            print("- 3 accessed manageLocationCollection")
             locationFetcher.fetchLocation { locationExists in
-//                print("- 7 accessed manageLocationCollection")
                 if locationExists{
                     if let unwp_lat = self.locationFetcher.currentLocation?.latitude,
                        let unwp_lon = self.locationFetcher.currentLocation?.longitude{
                         let updateDict = ["latitude":String(unwp_lat),"longitude":String(unwp_lon),"location_permission":"True","location_reoccuring_permission":"False"]
-                        
-                        self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
-//                            print("- 9 accessed manageLocationCollection")
-                            switch resultString{
-                            case .success(_):
-//                                print("- 10 accessed manageLocationCollection")
-                                DispatchQueue.main.async{
-//                                    print("** --> label should have changed")
-                                    self.removeSpinner()
-//                                    self.lblLocationDayWeatherSwitch.text = "Track Location (\(getCurrentLocalDateString())): "
-                                    self.setLocationSwitchLabelText()
-                                }
-                                self.templateAlert(alertTitle: "Success!", alertMessage: "")
-                            case let .failure(error):
-                                self.removeSpinner()
-                                self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
-                            }
-                        }
+                        print("-Scenario 4: NO locationExists; status = Authorized When In Use")
+                        self.sendUpdateDictToApi(updateDict: updateDict)
+//                        self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
+//                            switch resultString{
+//                            case .success(_):
+//                                DispatchQueue.main.async{
+//                                    self.removeSpinner()
+//                                    self.setLocationSwitchLabelText()
+//                                }
+//                                self.templateAlert(alertTitle: "Success!", alertMessage: "")
+//                            case let .failure(error):
+//                                self.removeSpinner()
+//                                self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
+//                            }
+//                        }
                     }
                 }
             }
-            let updateDict = ["location_permission":"True","location_reoccuring_permission":"False"]
-            self.sendUpdateDictToApi(updateDict: updateDict)
-            setLocationSwitchLabelText()
+//            This last part doesn't make sense???
+//                let updateDict = ["location_permission":"True","location_reoccuring_permission":"False"]
+//                self.sendUpdateDictToApi(updateDict: updateDict)
+//                setLocationSwitchLabelText()
+
         }
         
         else {
@@ -324,12 +322,24 @@ class ManageUserVC: TemplateVC{
                 
                 self.templateAlert(alertTitle: "Success!", alertMessage: "")
             case let .failure(error):
-                self.removeSpinner()
-                self.setLocationSwitchLabelText()
-                self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
+                DispatchQueue.main.async{
+                    self.removeSpinner()
+                    self.switchErrorSwitchBack()
+                    self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
+                }
             }
         }
     }
+    
+    func switchErrorSwitchBack(){
+        if self.swtchLocationDayWeather.isOn==true{
+            self.swtchLocationDayWeather.isOn=false
+        } else {
+            self.swtchLocationDayWeather.isOn=true
+        }
+        self.setLocationSwitchLabelText()
+    }
+    
     
     /* Objc Methods*/
     @objc private func switchValueChanged(_ sender: UISwitch) {
