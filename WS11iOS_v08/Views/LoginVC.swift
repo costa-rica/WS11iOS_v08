@@ -240,7 +240,11 @@ class LoginVC: TemplateVC {
         userStore.callLoginUser() { responseResultLogin in
             DispatchQueue.main.async {
             switch responseResultLogin{
-            case .success(_):
+            case let .success(loginMessageDict):
+                if loginMessageDict["alert_title"] == "Failed" {
+                    self.templateAlert(alertTitle: "Unsuccessful Login", alertMessage: "\(loginMessageDict["alert_message"]!)")
+                    return
+                }
                 self.requestStore.token = self.userStore.user.token
                 self.userStore.user.password = unwp_password //<-- override passwrod
 

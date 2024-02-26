@@ -7,6 +7,13 @@
 
 import Foundation
 
+class LoginResponse: Codable {
+    var alert_title: String?
+    var alert_message: String?
+    var user: User?
+}
+
+
 class User: Codable {
     var id: String?
     var email: String?

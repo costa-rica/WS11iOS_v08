@@ -106,7 +106,8 @@ class UserStore {
     }
 
 
-    func callLoginUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+//    func callLoginUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+    func callLoginUser(completion: @escaping (Result<[String:String], Error>) -> Void) {
         guard let unwp_email = user.email,
               let unwp_password = user.password else {
             completion(.failure(UserStoreError.failedToLogin))
@@ -126,14 +127,22 @@ class UserStore {
                 }
                 
                 do {
+
                     let jsonDecoder = JSONDecoder()
 //                    let jsonUser = try jsonDecoder.decode(User.self, from: unwrapped_data)
-                    self.user = try jsonDecoder.decode(User.self, from: unwrapped_data)
+//                    self.user = try jsonDecoder.decode(User.self, from: unwrapped_data)
+                    let loginResponse = try jsonDecoder.decode(LoginResponse.self, from: unwrapped_data)
+                    guard let user = loginResponse.user,
+                          let _ = loginResponse.alert_title,
+                          let _ = loginResponse.alert_message else {
+                        completion(.success(["alert_title":"Failed","alert_message":"Login response from API is missing either user, alert_title, alert_message or all three."]))
+                        return
+                    }
+                    
                     print("user respond login success")
                     OperationQueue.main.addOperation {
-//                        completion(.success(jsonUser))
-                        
-                        completion(.success(true))
+                        self.user = user
+                        completion(.success(["alert_title":"Success!","alert_message":""]))
                     }
                 } catch {
                     OperationQueue.main.addOperation {
