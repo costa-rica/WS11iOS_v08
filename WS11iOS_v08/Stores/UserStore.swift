@@ -484,6 +484,9 @@ extension UserStore{
                     DispatchQueue.main.async {
                         completion(true)
                     }
+                    if jsonResult["alert_title"] == "Success!"{
+                        self.deleteJsonFile(filename: "user_location.json")
+                    }
                 } else {
                     // Data is not in the expected format
                     DispatchQueue.main.async {

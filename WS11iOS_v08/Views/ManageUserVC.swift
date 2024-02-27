@@ -25,9 +25,10 @@ class ManageUserVC: TemplateVC{
     let vwLineLocationDayWeather=UIView()
     let lblLocationDayWeatherTitle = UILabel()
     let lblLocationDayWeatherDetails = UILabel()
-    let stckVwLocationDayWeather=UIStackView()
-    let lblLocationDayWeatherSwitch=UILabel()
-    let swtchLocationDayWeather = UISwitch()
+    // old name: LocationDayWeatherSwitch
+    let stckVwLocTrackReoccurring=UIStackView()
+    let lblLocTrackReoccurringSwitch=UILabel()
+    let swtchLocTrackReoccurring = UISwitch()
     var btnUpdate = UIButton()
     var updateDict:[String:String] = [:]
     
@@ -76,7 +77,6 @@ class ManageUserVC: TemplateVC{
         ])
     }
     
-    
     func setup_lblFindSettingsScreenForAppleHealthPermission(){
         
         lblPermissionsTitle.accessibilityIdentifier="lblPermissionsTitle"
@@ -123,33 +123,33 @@ class ManageUserVC: TemplateVC{
         lblLocationDayWeatherDetails.numberOfLines = 0
         contentView.addSubview(lblLocationDayWeatherDetails)
         
-        stckVwLocationDayWeather.accessibilityIdentifier="stckVwLocationDayWeather"
-        stckVwLocationDayWeather.translatesAutoresizingMaskIntoConstraints=false
-        stckVwLocationDayWeather.spacing = 5
-        stckVwLocationDayWeather.axis = .horizontal
-        contentView.addSubview(stckVwLocationDayWeather)
+        stckVwLocTrackReoccurring.accessibilityIdentifier="stckVwLocationDayWeather"
+        stckVwLocTrackReoccurring.translatesAutoresizingMaskIntoConstraints=false
+        stckVwLocTrackReoccurring.spacing = 5
+        stckVwLocTrackReoccurring.axis = .horizontal
+        contentView.addSubview(stckVwLocTrackReoccurring)
         
-        lblLocationDayWeatherSwitch.accessibilityIdentifier="lblLocationDayWeatherSwitch"
-        lblLocationDayWeatherSwitch.translatesAutoresizingMaskIntoConstraints=false
-        stckVwLocationDayWeather.addArrangedSubview(lblLocationDayWeatherSwitch)
+        lblLocTrackReoccurringSwitch.accessibilityIdentifier="lblLocationDayWeatherSwitch"
+        lblLocTrackReoccurringSwitch.translatesAutoresizingMaskIntoConstraints=false
+        stckVwLocTrackReoccurring.addArrangedSubview(lblLocTrackReoccurringSwitch)
         
-        swtchLocationDayWeather.accessibilityIdentifier = "swtchLocationDayWeather"
-        swtchLocationDayWeather.translatesAutoresizingMaskIntoConstraints = false
-        swtchLocationDayWeather.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
+        swtchLocTrackReoccurring.accessibilityIdentifier = "swtchLocationDayWeather"
+        swtchLocTrackReoccurring.translatesAutoresizingMaskIntoConstraints = false
+        swtchLocTrackReoccurring.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
         
-        stckVwLocationDayWeather.addArrangedSubview(swtchLocationDayWeather)
+        stckVwLocTrackReoccurring.addArrangedSubview(swtchLocTrackReoccurring)
         
         print("----> locationFetcher.userLocationManagerAuthStatus: \(locationFetcher.userLocationManagerAuthStatus)")
         
         if locationFetcher.userLocationManagerAuthStatus == "Denied"{
             print("*** accessed ?")
-            swtchLocationDayWeather.isOn=false
+            swtchLocTrackReoccurring.isOn=false
             locationFetcher.stopMonitoringLocationChanges()
             
         } else {
             // Set Location Switch
             if let unwp_user_loc_permission = userStore.user.location_reoccuring_permission  {
-                swtchLocationDayWeather.isOn = unwp_user_loc_permission
+                swtchLocTrackReoccurring.isOn = unwp_user_loc_permission
                 if unwp_user_loc_permission{
                     if locationFetcher.userLocationManagerAuthStatus == "Authorized Always"{
                         locationFetcher.startMonitoringLocationChanges()
@@ -176,11 +176,10 @@ class ManageUserVC: TemplateVC{
             lblLocationDayWeatherDetails.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             lblLocationDayWeatherDetails.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             
-            stckVwLocationDayWeather.topAnchor.constraint(equalTo: lblLocationDayWeatherDetails.bottomAnchor, constant: heightFromPct(percent: 2)),
-            stckVwLocationDayWeather.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: widthFromPct(percent: -2)),
+            stckVwLocTrackReoccurring.topAnchor.constraint(equalTo: lblLocationDayWeatherDetails.bottomAnchor, constant: heightFromPct(percent: 2)),
+            stckVwLocTrackReoccurring.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: widthFromPct(percent: -2)),
         ])
     }
-    
     
     func setup_btnDeleteUser(){
         lineViewDeleteUser.backgroundColor = UIColor(named: "lineColor")
@@ -204,7 +203,7 @@ class ManageUserVC: TemplateVC{
         contentView.addSubview(btnDeleteUser)
         
         NSLayoutConstraint.activate([
-            lineViewDeleteUser.bottomAnchor.constraint(equalTo: swtchLocationDayWeather.bottomAnchor, constant: heightFromPct(percent: 5)),
+            lineViewDeleteUser.bottomAnchor.constraint(equalTo: swtchLocTrackReoccurring.bottomAnchor, constant: heightFromPct(percent: 5)),
             lineViewDeleteUser.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             lineViewDeleteUser.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             lineViewDeleteUser.heightAnchor.constraint(equalToConstant: 1), // Set line thickness
@@ -278,7 +277,7 @@ class ManageUserVC: TemplateVC{
         
         else {
             self.removeSpinner()
-            self.swtchLocationDayWeather.isOn=false
+            self.swtchLocTrackReoccurring.isOn=false
             // Set Location Label
             self.setLocationSwitchLabelText()
 //            let initialSwitchStateText = self.swtchLocationDayWeather.isOn ? "on" : "off"
@@ -289,23 +288,23 @@ class ManageUserVC: TemplateVC{
     }
     func setLocationSwitchLabelText(){
 
-        if swtchLocationDayWeather.isOn{
+        if swtchLocTrackReoccurring.isOn{
             if locationFetcher.userLocationManagerAuthStatus == "Authorized Always"{
-                lblLocationDayWeatherSwitch.text = "Track Location (Once Daily): "
+                lblLocTrackReoccurringSwitch.text = "Track Location (Once Daily): "
                 self.locationFetcher.startMonitoringLocationChanges()
             }
             else if let unwp_last_date = userStore.user.last_location_date,
                     let unwp_timezone = userStore.user.timezone {
                 if unwp_timezone != "Etc/GMT"{
-                    lblLocationDayWeatherSwitch.text = "Track Location (\(unwp_last_date)): "
+                    lblLocTrackReoccurringSwitch.text = "Track Location (\(unwp_last_date)): "
                 } else {
-                    lblLocationDayWeatherSwitch.text = "Track Location (Restricted): "
+                    lblLocTrackReoccurringSwitch.text = "Track Location (Restricted): "
                 }
             } else {
-                lblLocationDayWeatherSwitch.text = "Track Location (Restricted): "
+                lblLocTrackReoccurringSwitch.text = "Track Location (Restricted): "
             }
         } else {
-            lblLocationDayWeatherSwitch.text = "Track Location (off): "
+            lblLocTrackReoccurringSwitch.text = "Track Location (off): "
             locationFetcher.stopMonitoringLocationChanges()
         }
     }
@@ -316,7 +315,7 @@ class ManageUserVC: TemplateVC{
             case .success(_):
                 DispatchQueue.main.async{
                     self.removeSpinner()
-                    self.swtchLocationDayWeather.isOn=true
+                    self.swtchLocTrackReoccurring.isOn=true
                     self.setLocationSwitchLabelText()
                 }
                 
@@ -332,10 +331,10 @@ class ManageUserVC: TemplateVC{
     }
     
     func switchErrorSwitchBack(){
-        if self.swtchLocationDayWeather.isOn==true{
-            self.swtchLocationDayWeather.isOn=false
+        if self.swtchLocTrackReoccurring.isOn==true{
+            self.swtchLocTrackReoccurring.isOn=false
         } else {
-            self.swtchLocationDayWeather.isOn=true
+            self.swtchLocTrackReoccurring.isOn=true
         }
         self.setLocationSwitchLabelText()
     }
@@ -401,25 +400,25 @@ class ManageUserVC: TemplateVC{
                 case .success(_):
                     print("-successfully updated")
                     self?.removeSpinner()
-                    self?.swtchLocationDayWeather.isOn=false
+                    self?.swtchLocTrackReoccurring.isOn=false
                     // Set Location Label
-                    let initialSwitchStateText = (self?.swtchLocationDayWeather.isOn)! ? "on" : "off"
-                    self?.lblLocationDayWeatherSwitch.text = "Track Location (\(initialSwitchStateText)): "
+                    let initialSwitchStateText = (self?.swtchLocTrackReoccurring.isOn)! ? "on" : "off"
+                    self?.lblLocTrackReoccurringSwitch.text = "Track Location (\(initialSwitchStateText)): "
                 case .failure(_):
                     print("-failed to update user status")
                     self?.removeSpinner()
                     self?.templateAlert(alertTitle: "Unsuccessful update", alertMessage: "Try again or email nrodrig1@gmail.com.")
                     
-                    self?.swtchLocationDayWeather.isOn=true
+                    self?.swtchLocTrackReoccurring.isOn=true
                     // Set Location Label
-                    let initialSwitchStateText = (self?.swtchLocationDayWeather.isOn)! ? "on" : "off"
-                    self?.lblLocationDayWeatherSwitch.text = "Track Location (\(initialSwitchStateText)): "
+                    let initialSwitchStateText = (self?.swtchLocTrackReoccurring.isOn)! ? "on" : "off"
+                    self?.lblLocTrackReoccurringSwitch.text = "Track Location (\(initialSwitchStateText)): "
                 }
             }
         }
         // 'No' action
         let noAction = UIAlertAction(title: "No", style: .cancel) {[weak self] _ in
-            self?.swtchLocationDayWeather.isOn=true
+            self?.swtchLocTrackReoccurring.isOn=true
             self?.setLocationSwitchLabelText()
         }
         
@@ -429,8 +428,6 @@ class ManageUserVC: TemplateVC{
     }
     
     /* Action Methods */
-    
-    
     func deleteUser(){
         self.userStore.callDeleteUser { responseResult in
             switch responseResult{
