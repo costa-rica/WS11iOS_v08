@@ -63,10 +63,10 @@ class UserStore {
         self.documentsURL = self.fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
-    func callRegisterNewUser(email: String, password: String, lat: Double, lon: Double, completion: @escaping (Result<[String: String], Error>) -> Void) {
-        let latString = String(lat)
-        let lonString = String(lon)
-        let request = requestStore.createRequestWithTokenAndBody(endPoint: .register, body: ["new_email": email, "new_password": password, "lat": latString, "lon": lonString])
+    func callRegisterNewUser(email: String, password: String, completion: @escaping (Result<[String: String], Error>) -> Void) {
+//        let latString = String(lat)
+//        let lonString = String(lon)
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: .register, body: ["new_email": email, "new_password": password])
         let task = session.dataTask(with: request) { data, response, error in
             // Check for an error. If there is one, complete with failure.
             if let error = error {

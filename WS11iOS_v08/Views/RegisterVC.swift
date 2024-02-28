@@ -193,9 +193,8 @@ class RegisterVC: TemplateVC {
     
     func requestRegister() {
         print("- RegisterVC: requestRegister()")
-        let lat = 999.99
-        let lon = 999.99
-        userStore.callRegisterNewUser(email: txtEmail.text!, password: txtPassword.text!,lat:lat, lon: lon) { responseResultRegister in
+
+        userStore.callRegisterNewUser(email: txtEmail.text!, password: txtPassword.text!) { responseResultRegister in
             DispatchQueue.main.async {
                 switch responseResultRegister {
                 case let .success(jsonResult):

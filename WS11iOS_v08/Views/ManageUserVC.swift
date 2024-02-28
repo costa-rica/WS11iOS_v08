@@ -252,27 +252,9 @@ class ManageUserVC: TemplateVC{
                         let updateDict = ["latitude":String(unwp_lat),"longitude":String(unwp_lon),"location_permission":"True","location_reoccuring_permission":"False"]
                         print("-Scenario 4: NO locationExists; status = Authorized When In Use")
                         self.sendUpdateDictToApi(updateDict: updateDict)
-//                        self.userStore.callUpdateUser(endPoint: .update_user_location_with_lat_lon, updateDict: updateDict) { resultString in
-//                            switch resultString{
-//                            case .success(_):
-//                                DispatchQueue.main.async{
-//                                    self.removeSpinner()
-//                                    self.setLocationSwitchLabelText()
-//                                }
-//                                self.templateAlert(alertTitle: "Success!", alertMessage: "")
-//                            case let .failure(error):
-//                                self.removeSpinner()
-//                                self.templateAlert(alertTitle: "Unsuccessful update", alertMessage: error.localizedDescription)
-//                            }
-//                        }
                     }
                 }
             }
-//            This last part doesn't make sense???
-//                let updateDict = ["location_permission":"True","location_reoccuring_permission":"False"]
-//                self.sendUpdateDictToApi(updateDict: updateDict)
-//                setLocationSwitchLabelText()
-
         }
         
         else {
@@ -280,8 +262,6 @@ class ManageUserVC: TemplateVC{
             self.swtchLocTrackReoccurring.isOn=false
             // Set Location Label
             self.setLocationSwitchLabelText()
-//            let initialSwitchStateText = self.swtchLocationDayWeather.isOn ? "on" : "off"
-//            self.lblLocationDayWeatherSwitch.text = "Track Location (\(initialSwitchStateText)): "
             self.templateAlert(alertTitle: "", alertMessage: "For better calculations go to Setting and set Location permissions to Always")
         }
         

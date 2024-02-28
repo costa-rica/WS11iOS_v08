@@ -89,10 +89,8 @@ class LocationFetcher: NSObject, CLLocationManagerDelegate {
                 case .authorizedAlways, .authorizedWhenInUse:
                     self.locationFetchCompletion = completion // Store the completion handler
                     self.locationManager.requestLocation() // Asynchronously updates location
-                    print("--- this path doesen't complete?")
-//                    self.locationFetchCompletion?(true) // Call completion with true since location is updated
-//                    self.locationFetchCompletion = nil // Clear the stored completion handler
-//                    completion(true)
+                    print("locationFetcher.fetchLocation: case .authorizedAlways, .authorizedWhenInUse:")
+
                 default:
                     completion(false)
                 }
@@ -100,7 +98,6 @@ class LocationFetcher: NSObject, CLLocationManagerDelegate {
                 completion(false)
             }
         }
-        print("--- this path doesen't complete? 2")
     }
     
     
@@ -110,16 +107,19 @@ class LocationFetcher: NSObject, CLLocationManagerDelegate {
         return paths[0]
     }
     
-    // This method goes with appendLocationToFile
-    private func pre_appendLocationToFile(lastLocation: CLLocation){
-        currentLocation = lastLocation.coordinate
-        let locationData = ["\(getCurrentUtcDateString())", "\(lastLocation.coordinate.latitude)", "\(lastLocation.coordinate.longitude)"]
-        appendLocationToFile(locationData)
-        locationFetchCompletion?(true) // Call completion with true since location is updated
-        locationFetchCompletion = nil // Clear the stored completion handler
-    }
+//    // This method goes with appendLocationToFile
+//    private func pre_appendLocationToFile(lastLocation: CLLocation){
+//        currentLocation = lastLocation.coordinate
+//        let locationData = ["\(getCurrentUtcDateString())", "\(lastLocation.coordinate.latitude)", "\(lastLocation.coordinate.longitude)"]
+//        appendLocationToFile(locationData)
+//        locationFetchCompletion?(true) // Call completion with true since location is updated
+//        locationFetchCompletion = nil // Clear the stored completion handler
+//    }
     
-    private func appendLocationToFile(_ locationData: [String]) {
+//    private func appendLocationToFile(_ locationData: [String]) {
+    private func appendLocationToFile(lastLocation: CLLocation) {
+        
+        let locationData = ["\(getCurrentUtcDateString())", "\(lastLocation.coordinate.latitude)", "\(lastLocation.coordinate.longitude)"]
         
         let fileURL = getDocumentsDirectory().appendingPathComponent("user_location.json")
         
@@ -141,6 +141,8 @@ class LocationFetcher: NSObject, CLLocationManagerDelegate {
         } catch {
             print("Failed to save location data: \(error.localizedDescription)")
         }
+        locationFetchCompletion?(true) // Call completion with true since location is updated
+        locationFetchCompletion = nil // Clear the stored completion handler
     }
     
     func checkUserLocationJson(completion: @escaping (Bool) -> Void) {
@@ -180,25 +182,24 @@ class LocationFetcher: NSObject, CLLocationManagerDelegate {
 extension LocationFetcher {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("*** acccessed didUpdateLocations ***")
+        print("- acccessed locationManager(didUpdateLocations) ")
         guard let lastLocation = locations.last else {
-            print("* This is where we are stuck <---")
+            locationFetchCompletion?(true) // Call completion with true since location is updated
+            locationFetchCompletion = nil // Clear the stored completion handler
             return }
+
+        currentLocation = lastLocation.coordinate
         let lastUpdateTimestamp = userDefaults.double(forKey: "lastUpdateTimestamp")
         let now = Date().timeIntervalSince1970
         if now - lastUpdateTimestamp >= updateInterval {
-            print("* This is where we are stuck <--- 2")
-            // Process new location here
-            pre_appendLocationToFile(lastLocation: lastLocation)
+            appendLocationToFile(lastLocation: lastLocation)
             // Update the timestamp of the last processed update
             userDefaults.set(now, forKey: "lastUpdateTimestamp")
         } 
         else{
-            print("--- should complete ???????")
             locationFetchCompletion?(true) // Call completion with true since location is updated
             locationFetchCompletion = nil // Clear the stored completion handler
         }
-        print("Exited didUpdateLocations")
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -209,9 +210,6 @@ extension LocationFetcher {
         // Update userLocationManagerAuthStatus when authorization status changes
         userLocationManagerAuthStatus = LocationFetcher.string(for: status)
         
-        // Handle authorization status change if needed, for example:
-        // - Start or stop location updates
-        // - Show or hide location-related features
     }
 }
 
