@@ -92,7 +92,6 @@ class LoginVC: TemplateVC {
             }
         }
         userStore.checkDashboardJson { result in
-//            print("- func setup_checkFiles() ")
             DispatchQueue.main.async{
                 switch result{
                 case .success(_):
@@ -241,7 +240,12 @@ class LoginVC: TemplateVC {
             DispatchQueue.main.async {
             switch responseResultLogin{
             case let .success(loginMessageDict):
-                if loginMessageDict["alert_title"] == "Failed" {
+                if loginMessageDict["alert_title"] == "Temporary Service Interruption" {
+                    self.templateAlert(alertTitle: loginMessageDict["alert_title"]!, alertMessage: "\(loginMessageDict["alert_message"]!)")
+                    return
+                }
+                
+                else if loginMessageDict["alert_title"] == "Failed" {
                     self.templateAlert(alertTitle: "Unsuccessful Login", alertMessage: "\(loginMessageDict["alert_message"]!)")
                     return
                 }
@@ -402,6 +406,8 @@ class LoginVC: TemplateVC {
         view.endEditing(true)
     }
     @objc func signUpTapped() {
+        self.txtEmail.text = ""
+        self.txtPassword.text = ""
         performSegue(withIdentifier: "goToRegisterVC", sender: self)
     }
     
@@ -476,6 +482,7 @@ class LoginVC: TemplateVC {
             registerVC.userStore = self.userStore
             registerVC.requestStore = self.requestStore
             registerVC.locationFetcher = self.locationFetcher
+
         }
         else if (segue.identifier == "goToDashboardVC"){
             let dashboardVC = segue.destination as! DashboardVC

@@ -64,8 +64,7 @@ class UserStore {
     }
 
     func callRegisterNewUser(email: String, password: String, completion: @escaping (Result<[String: String], Error>) -> Void) {
-//        let latString = String(lat)
-//        let lonString = String(lon)
+
         let request = requestStore.createRequestWithTokenAndBody(endPoint: .register, body: ["new_email": email, "new_password": password])
         let task = session.dataTask(with: request) { data, response, error in
             // Check for an error. If there is one, complete with failure.
@@ -89,9 +88,9 @@ class UserStore {
                         completion(.success(jsonResult))
                     }
                 } else {
-                    // If decoding fails, complete with a custom error.
+                    // If decoding fails due to not being a [String: String]
                     DispatchQueue.main.async {
-                        completion(.failure(UserStoreError.failedDecode))
+                        completion(.failure(UserStoreError.failedToReceiveExpectedResponse))
                     }
                 }
             } catch {
@@ -132,10 +131,14 @@ class UserStore {
 //                    let jsonUser = try jsonDecoder.decode(User.self, from: unwrapped_data)
 //                    self.user = try jsonDecoder.decode(User.self, from: unwrapped_data)
                     let loginResponse = try jsonDecoder.decode(LoginResponse.self, from: unwrapped_data)
-                    guard let user = loginResponse.user,
-                          let _ = loginResponse.alert_title,
-                          let _ = loginResponse.alert_message else {
-                        completion(.success(["alert_title":"Failed","alert_message":"Login response from API is missing either user, alert_title, alert_message or all three."]))
+                    guard let user = loginResponse.user else {
+                        
+                        guard let unwp_title = loginResponse.alert_title,
+                              let unwp_message = loginResponse.alert_message else {
+                                  completion(.success(["alert_title":"Failed","alert_message":"Login response from API is missing either user, alert_title, alert_message or all three."]))
+                                  return
+                              }
+                        completion(.success(["alert_title":unwp_title,"alert_message":unwp_message]))
                         return
                     }
                     
@@ -288,6 +291,45 @@ class UserStore {
                     OperationQueue.main.addOperation {
                         completion(.failure(UserStoreError.serverError(statusCode: httpResponse.statusCode)))
                     }
+                }
+            }
+        }
+        task.resume()
+    }
+    func callSendResetPasswordEmail(email:String, completion:@escaping(Result<[String:String], Error>) -> Void){
+        let request = requestStore.createRequestWithTokenAndBody(endPoint: .get_reset_password_token, body: ["email": email, "ws_api_password": Config.ws_api_password])
+        let task = session.dataTask(with: request) { data, response, error in
+            // Check for an error. If there is one, complete with failure.
+            if let error = error {
+                print("Network request error: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+            // Ensure data is not nil, otherwise, complete with a custom error.
+            guard let unwrappedData = data else {
+                print("No data response")
+                completion(.failure(UserStoreError.failedToReceiveServerResponse))
+                return
+            }
+            do {
+                // Attempt to decode the JSON response.
+                if let jsonResult = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as? [String: String] {
+                    print("JSON serialized well")
+                    // Ensure completion handler is called on the main queue.
+                    DispatchQueue.main.async {
+                        completion(.success(jsonResult))
+                    }
+                } else {
+                    // If decoding fails due to not being a [String: String]
+                    DispatchQueue.main.async {
+                        completion(.failure(UserStoreError.failedToReceiveExpectedResponse))
+                    }
+                }
+            } catch {
+                // Handle any errors that occurred during the JSON decoding.
+                print("---- UserStore.callSendResetPasswordEmail: Failed to read response")
+                DispatchQueue.main.async {
+                    completion(.failure(UserStoreError.failedDecode))
                 }
             }
         }

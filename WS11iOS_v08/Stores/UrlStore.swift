@@ -36,6 +36,7 @@ enum EndPoint: String {
 //    case update_user = "update_user"
     case update_user_location_with_lat_lon = "update_user_location_with_lat_lon"
     case update_user_location_with_user_location_json = "update_user_location_with_user_location_json"
+    case get_reset_password_token = "get_reset_password_token"
 }
 
 class URLStore {

@@ -10,7 +10,7 @@ import UIKit
 class RegisterVC: TemplateVC {
     
     var userStore: UserStore!
-//    var urlStore: URLStore!
+    //    var urlStore: URLStore!
     var requestStore: RequestStore!
     var locationFetcher:LocationFetcher!
     // Login/Register
@@ -116,8 +116,6 @@ class RegisterVC: TemplateVC {
             lblEmail.widthAnchor.constraint(equalTo: lblPassword.widthAnchor),
         ])
         
-        
-        
         // This code makes the widths of lblPassword and btnShowPassword take lower precedence than txtPassword.
         lblPassword.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         btnShowPassword.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -156,22 +154,16 @@ class RegisterVC: TemplateVC {
         if let email = txtEmail.text, isValidEmail(email) {
             // Email is valid, proceed to check password
             if let password = txtPassword.text, !password.isEmpty {
-                // Email is valid and password is not empty
                 // Proceed with registration logic
                 requestRegister()
             } else {
-                // Password is empty, show custom alert for empty password
-//                showPasswordAlert()
                 self.templateAlert(alertTitle: "", alertMessage: "Must have password")
             }
         } else {
-            // Email is not valid, show custom alert for invalid email
-//            showEmailAlert()
             self.templateAlert(alertTitle: "", alertMessage: "Must valid have email")
         }
     }
-        
-//    }
+    
     @objc func togglePasswordVisibility() {
         txtPassword.isSecureTextEntry = !txtPassword.isSecureTextEntry
         let imageName = txtPassword.isSecureTextEntry ? "eye.slash" : "eye"
@@ -182,18 +174,11 @@ class RegisterVC: TemplateVC {
         // Dismiss the keyboard
         view.endEditing(true)
     }
-        
-    func isValidEmail(_ email: String) -> Bool {
-        // Regular expression for validating email
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
-    }
     
     
     func requestRegister() {
         print("- RegisterVC: requestRegister()")
-
+        
         userStore.callRegisterNewUser(email: txtEmail.text!, password: txtPassword.text!) { responseResultRegister in
             DispatchQueue.main.async {
                 switch responseResultRegister {
@@ -206,7 +191,7 @@ class RegisterVC: TemplateVC {
                     } else {
                         self.templateAlert(alertMessage: "Unable to register at this time.")
                     }
-
+                    
                 case .failure(let error):
                     let errorMessage: String
                     if let userStoreError = error as? UserStoreError {
@@ -235,16 +220,17 @@ class RegisterVC: TemplateVC {
         let alert = UIAlertController(title: "Success!", message: "", preferredStyle: .alert)
         // This is used to go back
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-//            DispatchQueue.main.async{
-                let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-                loginVC.txtEmail.text = self.txtEmail.text
-                loginVC.txtPassword.text = self.txtPassword.text
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                   let sceneDelegate = windowScene.delegate as? SceneDelegate,
-                   let window = sceneDelegate.window {
-                    window.rootViewController = UINavigationController(rootViewController: loginVC)
-                }
-//            }
+            
+            self.userStore.deleteJsonFile(filename: "user.json")
+            let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+            loginVC.txtEmail.text = self.txtEmail.text
+            loginVC.txtPassword.text = self.txtPassword.text
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let sceneDelegate = windowScene.delegate as? SceneDelegate,
+               let window = sceneDelegate.window {
+                window.rootViewController = UINavigationController(rootViewController: loginVC)
+            }
+            
         }))
         self.present(alert, animated: true, completion: nil)
     }

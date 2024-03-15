@@ -82,6 +82,24 @@ class ForgotPasswordVC: TemplateVC {
         }, completion: nil)
         print("pressed submit")
 //        print(txtEmail.text)
+        
+        if let unwp_email = txtEmail.text, isValidEmail(unwp_email) {
+            userStore.callSendResetPasswordEmail(email: unwp_email) { responseResultForgotPasswordEmail in
+                switch responseResultForgotPasswordEmail{
+                case let .success(alertDict):
+                    if let unwp_title = alertDict["alert_title"],
+                       let unwp_message = alertDict["alert_message"]{
+//                        self.templateAlert(alertTitle: unwp_title, alertMessage: unwp_message)
+                        self.templateAlert(alertTitle: unwp_title, alertMessage: unwp_message, backScreen: true)
+                    }
+                case .failure(_):
+                    self.templateAlert(alertMessage: "Experiencing technical difficulties")
+                }
+            }
+        }
+        else {
+            self.templateAlert(alertTitle: "Must enter a valid email", alertMessage: "")
+        }
     }
     
     

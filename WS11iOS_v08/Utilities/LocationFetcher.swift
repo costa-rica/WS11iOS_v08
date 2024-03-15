@@ -222,7 +222,7 @@ class HistUserLocation:Codable{
 
 class DictSendUserLocation:Codable{
     var user_location:[HistUserLocation]!
-    var timestamp_utc:String!
+    var timestamp_utc:String!//"yyyyMMdd-HHmm"
 }
 
 //class DictUpdate:Codable{
