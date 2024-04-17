@@ -222,10 +222,10 @@ extension ManageAppleHealthVC{
                 case .success(_):
                     self.strStatusMessage = self.strStatusMessage + "\n" + "2) Quantity and Category data sent successfully."
                     self.templateAlert(alertTitle: "Success!",alertMessage: "")
-//                    self.templateAlert(alertTitle: "Success", alertMessage: self.strStatusMessage)
-//                    self.templateAlert(alertTitle: "Processing Data", alertMessage:  responseDict["alertMessage"] ?? "<failed to get good message>")
+                    print("*** MangeAppleHealhtVC.sendAppleHealthData successful! ** ")
 
                 case .failure(_):
+                    print("---- MangeAppleHealhtVC.sendAppleHealthData failed :( ---- ")
                     self.strStatusMessage = self.strStatusMessage + "\n" + "2) Quantity and Category data NOT sent successfully."
 
                     self.templateAlert(alertTitle: "Failed to Send",alertMessage: self.strStatusMessage)

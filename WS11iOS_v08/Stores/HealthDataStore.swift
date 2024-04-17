@@ -45,7 +45,28 @@ class HealthDataStore {
                 }
                 return
             }
-            guard let unwrapped_data = data else {
+//            guard let unwrapped_data = data else {
+//                // No data scenario
+//                DispatchQueue.main.async {
+//                    completion(.failure(URLError(.badServerResponse)))
+//                    print("HealthDataStore.callRecieveAppleHealthData received unexpected json response from WSAPI. URLError(.badServerResponse): \(URLError(.badServerResponse))")
+//                }
+//                return
+//            }
+//            do {
+//                if let jsonResult = try JSONSerialization.jsonObject(with: unwrapped_data, options: []) as? [String: String] {
+//                    
+//                    DispatchQueue.main.async {
+//                        completion(.success(jsonResult))
+//                    }
+//                } else {
+//                    // Data is not in the expected format
+//                    DispatchQueue.main.async {
+//                        completion(.failure(URLError(.cannotParseResponse)))
+//                        print("HealthDataStore.callRecieveAppleHealthData received unexpected json response from WSAPI. URLError(.cannotParseResponse): \(URLError(.cannotParseResponse))")
+//                    }
+//                }
+            guard let unwrappedData = data else {
                 // No data scenario
                 DispatchQueue.main.async {
                     completion(.failure(URLError(.badServerResponse)))
@@ -53,17 +74,18 @@ class HealthDataStore {
                 }
                 return
             }
+            // Decode the JSON data
             do {
-                if let jsonResult = try JSONSerialization.jsonObject(with: unwrapped_data, options: []) as? [String: String] {
-                    
+                // Modify the JSON data by replacing two spaces with no space
+                guard var modifiedData = String(data: unwrappedData, encoding: .utf8) else {
+                    throw HealthDataStoreError.unknownServerResponse
+                }
+                modifiedData = modifiedData.replacingOccurrences(of: "{\\n  ", with: "{\\n")
+                print("modifiedData: \(modifiedData)")
+                if let jsonResult = try JSONSerialization.jsonObject(with: modifiedData.data(using: .utf8)!, options: []) as? [String: String] {
                     DispatchQueue.main.async {
                         completion(.success(jsonResult))
-                    }
-                } else {
-                    // Data is not in the expected format
-                    DispatchQueue.main.async {
-                        completion(.failure(URLError(.cannotParseResponse)))
-                        print("HealthDataStore.callRecieveAppleHealthData received unexpected json response from WSAPI. URLError(.cannotParseResponse): \(URLError(.cannotParseResponse))")
+                        print("*** successfully decode QTY and CAT response ****")
                     }
                 }
             } catch {
@@ -100,7 +122,38 @@ class HealthDataStore {
                 }
                 return
             }
-            guard let unwrapped_data = data else {
+            // Print response headers
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Response Headers:\n\(httpResponse.allHeaderFields)")
+                
+                /*
+                 Maestro and Venturer:
+                 Response Headers:
+                 [AnyHashable("Content-Type"): application/json, AnyHashable("Date"): Thu, 28 Mar 2024 10:17:04 GMT, AnyHashable("Server"): nginx/1.18.0 (Ubuntu), AnyHashable("Content-Length"): 60, AnyHashable("Connection"): keep-alive]
+                 */
+            }
+//            guard let unwrapped_data = data else {
+//                // No data scenario
+//                DispatchQueue.main.async {
+//                    completion(.failure(URLError(.badServerResponse)))
+//                    print("HealthDataStore.callRecieveAppleHealthData received unexpected json response from WSAPI. URLError(.badServerResponse): \(URLError(.badServerResponse))")
+//                }
+//                return
+//            }
+//            do {
+//                if let jsonResult = try JSONSerialization.jsonObject(with: unwrapped_data, options: []) as? [String: String] {
+//                    
+//                    DispatchQueue.main.async {
+//                        completion(.success(jsonResult))
+//                    }
+//                } else {
+//                    // Data is not in the expected format
+//                    DispatchQueue.main.async {
+//                        completion(.failure(URLError(.cannotParseResponse)))
+//                        print("HealthDataStore.callRecieveAppleHealthData received unexpected json response from WSAPI. URLError(.cannotParseResponse): \(URLError(.cannotParseResponse))")
+//                    }
+//                }
+            guard let unwrappedData = data else {
                 // No data scenario
                 DispatchQueue.main.async {
                     completion(.failure(URLError(.badServerResponse)))
@@ -108,11 +161,18 @@ class HealthDataStore {
                 }
                 return
             }
+            // Decode the JSON data
             do {
-                if let jsonResult = try JSONSerialization.jsonObject(with: unwrapped_data, options: []) as? [String: String] {
-                    
+                // Modify the JSON data by replacing two spaces with no space
+                guard var modifiedData = String(data: unwrappedData, encoding: .utf8) else {
+                    throw HealthDataStoreError.unknownServerResponse
+                }
+                modifiedData = modifiedData.replacingOccurrences(of: "{\\n  ", with: "{\\n")
+                
+                if let jsonResult = try JSONSerialization.jsonObject(with: modifiedData.data(using: .utf8)!, options: []) as? [String: String] {
                     DispatchQueue.main.async {
                         completion(.success(jsonResult))
+                        print("--> successfully decode workouts response ---")
                     }
                 } else {
                     // Data is not in the expected format
