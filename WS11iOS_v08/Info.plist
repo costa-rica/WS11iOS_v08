@@ -7,7 +7,7 @@
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string>$(ITSEncryptionExportComplianceCodeValue)</string>
 	<key>NSPrivacyAccessedAPICategoryUserDefaults</key>
-	<string>What Sticks connects to the What Sticks API for handlin user login, calculating statistics, and sending weather measurements.</string>
+	<string>What Sticks connects to the What Sticks API for handling user login, calculating statistics, and sending weather measurements.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
